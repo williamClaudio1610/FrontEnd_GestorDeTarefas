@@ -1,0 +1,81 @@
+.p-inputtext, .p-password input, .p-button {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+.p-password { width: 100%; }
+.p-divider .p-divider-content {
+  background: white;
+  padding: 0 1rem;
+}
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}
+.gradient-text {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.shadow-glow {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+.shadow-glow:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+.smooth-transition {
+  transition: all 0.2s ease;
+}
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@media (max-width: 640px) {
+  .min-h-screen { padding: 0.5rem; }
+  .max-w-md { width: 100%; }
+  .p-button, .p-inputtext, .p-password input {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+}
+.bg-pattern {
+  background-image: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.2) 2px, transparent 2px);
+  background-size: 20px 20px;
+  opacity: 0.3;
+}
