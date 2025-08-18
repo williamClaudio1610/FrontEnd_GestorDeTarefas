@@ -1,121 +1,75 @@
-<div class="min-h-screen bg-gradient-to-br from-rose-500 to-indigo-600 flex items-center justify-center p-4">
-  <div class="w-full max-w-md">
-    <!-- Toast para notificações -->
-    <p-toast position="top-right"></p-toast>
-    
-    <!-- Card principal -->
-    <div class="bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-100/20 overflow-hidden transition-transform hover:-translate-y-1">
-      
-      <!-- Header -->
-      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center p-8">
-        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30">
-          <i class="pi pi-user text-3xl"></i>
-        </div>
-        <h1 class="text-2xl font-bold">Bem-vindo</h1>
-        <p class="text-blue-100">Acesse sua conta</p>
-      </div>
+<div class="font-poppins min-h-screen flex justify-center items-center relative overflow-hidden">
+  <!-- Fundo com imagem embaçada -->
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80" 
+         alt="Fundo Corporativo" 
+         class="w-full h-full object-cover filter blur-sm brightness-50" />
+    <!-- Overlay escuro para melhor contraste -->
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+  </div>
 
-      <!-- Formulário -->
-      <div class="p-8">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-          <!-- Campo Email -->
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-3">Email</label>
-            <div class="relative">
-              <input
-                id="email"
-                type="email"
-                pInputText
-                formControlName="email"
-                placeholder="Digite seu email"
-                [class]="'w-full pr-14 py-4 border-b-2 bg-white/80 backdrop-blur-sm rounded-t-lg px-4 focus:outline-none transition-all duration-200 text-gray-700 placeholder-gray-400 text-base ' + getFieldClasses('email')"
-                [class.border-red-500]="hasFieldError('email')"
-                [class.border-green-500]="!hasFieldError('email') && loginForm.get('email')?.touched"
-              />
-              <i class="fas fa-envelope absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-            </div>
-            <small *ngIf="getFieldError('email')" class="text-red-500 text-sm mt-2 flex items-center">
-              <i class="fas fa-exclamation-triangle mr-2"></i>
-              {{ getFieldError('email') }}
-            </small>
-          </div>
+  <!-- Conteúdo principal com z-index maior -->
+  <div class="flex flex-col space-y-0 bg-white bg-opacity-95 backdrop-blur-sm
+  shadow-2xl rounded-xl md:flex-row md:space-y-0 md:space-x-12 relative z-10">
 
-          <!-- Campo Senha -->
-          <div>
-            <label for="senha" class="block text-sm font-medium text-gray-700 mb-3">Senha</label>
-            <div class="relative">
-              <input
-                id="senha"
-                [type]="showPassword ? 'text' : 'password'"
-                pInputText
-                formControlName="senha"
-                placeholder="Digite sua senha"
-                [class]="'w-full pr-14 py-4 border-b-2 bg-white/80 backdrop-blur-sm rounded-t-lg px-4 focus:outline-none transition-all duration-200 text-gray-700 placeholder-gray-400 text-base ' + getFieldClasses('senha')"
-                [class.border-red-500]="hasFieldError('senha')"
-                [class.border-green-500]="!hasFieldError('senha') && loginForm.get('senha')?.touched"
-              />
-              <button 
-                type="button"
-                (click)="togglePasswordVisibility()"
-                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none p-2 rounded hover:bg-gray-100"
-              >
-                <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-lg"></i>
-              </button>
-            </div>
-            <small *ngIf="getFieldError('senha')" class="text-red-500 text-sm mt-2 flex items-center">
-              <i class="fas fa-exclamation-triangle mr-2"></i>
-              {{ getFieldError('senha') }}
-            </small>
-          </div>
+  <!--Left Side-->
+    <div class="flex flex-col justify-center py-10 px-11 md:px-14">
+      <h1 class="text-2xl font-bold mb-3">Fazer Login</h1>
+        <p class="font-light text-gray-500 mb-5">Bem vindo de volta! Faça login para continuar</p>
 
-          <!-- Opções -->
-          <div class="flex justify-between items-center text-sm pt-2">
-            <label class="flex items-center space-x-3 cursor-pointer">
-              <input type="checkbox" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500 focus:ring-2">
-              <span class="text-gray-600">Lembrar-me</span>
-            </label>
-            <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline transition-colors">Esqueceu a senha?</a>
-          </div>
-
-          <!-- Botão de Login -->
-          <div class="pt-4">
-            <p-button
-              type="submit"
-              label="Entrar na Conta"
-              icon="pi pi-sign-in"
-              [loading]="loading"
-              [disabled]="loginForm.invalid || loading"
-              styleClass="w-full py-4 rounded-xl transition-all duration-300 hover:scale-105 font-bold text-lg shadow-2xl"
-              [class]="'w-full py-4 rounded-xl transition-all duration-300 hover:scale-105 font-bold text-lg shadow-2xl ' + (loading ? 'opacity-75' : '')"
-            ></p-button>
-          </div>
-        </form>
-
-        <!-- Divisor -->
-        <div class="my-8">
-          <p-divider>
-            <span class="text-gray-500 text-sm bg-white px-3">ou continue com</span>
-          </p-divider>
+        <!--Email-->
+        <div class="relative pb-4">
+          <span class="text-lg">Email</span>
+          <input type="email" placeholder="Insira seu Email" 
+          class="w-full h-11 mt-1 pl-5 pr-11 py-5 border
+          border-gray-500 rounded-xl placeholder:text-gray-500
+          placeholder:font-light outline-none" />
+          <!-- Ícone de email SVG -->
+          <svg class="absolute right-5 top-11 w-5 h-5 text-black" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+          </svg>
         </div>
 
-        <!-- Botões Sociais -->
-        <div class="space-y-4">
-          <button type="button" class="w-full flex items-center justify-center py-4 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 group">
-            <i class="fab fa-google text-red-500 mr-3 text-xl group-hover:scale-110 transition-transform"></i>
-            <span class="text-gray-700 font-medium text-base">Continuar com Google</span>
-          </button>
-          <button type="button" class="w-full flex items-center justify-center py-4 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 group">
-            <i class="fab fa-microsoft text-blue-500 mr-3 text-xl group-hover:scale-110 transition-transform"></i>
-            <span class="text-gray-700 font-medium text-base">Continuar com Microsoft</span>
-          </button>
+        <!--Senha-->
+        <div class="relative pb-4">
+          <span class="text-lg">Senha:</span>
+          <input type="password" placeholder="Insira sua Senha" class="w-full h-11 mt-1 pl-5 pr-11 py-5 border
+          border-gray-500 rounded-xl placeholder:text-gray-500
+          placeholder:font-light outline-none" />
+          <!-- Ícone de cadeado SVG -->
+          <svg class="absolute right-5 top-11 w-5 h-5 text-black" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+          </svg>
         </div>
 
-        <!-- Footer -->
-        <p class="text-center text-gray-600 mt-8 text-base">
-          Não tem conta? 
-          <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors">Cadastre-se agora</a>
-        </p>
-      </div>
+        <!--Lembrar-me e Esqueceu sua senha-->
+        <div class="flex justify-between w-full py-4">
+          <label>
+            <input type="checkbox" class="mr-1 accent-gray-500">Lembrar-me
+          </label>
+            <a href="#" class="font-semibold hover:underline">Esqueceu sua senha?</a>
+        </div>
+
+        <!--Botão de submeter-->
+        <button type="submit" class="w-full h-12 border border-gray-500
+        rounded-3x1 text-black rounded-xl hover:bg-gray-800 hover:text-white font-bold">
+          Entrar
+        </button>
+
+        <!--registrar-->
+        <div class="text-center text-gray-400 pt-3">
+          Não tem uma conta ?
+          <a href="#" class="font-bold hover:underline
+           text-black">Registrar-se</a>
+        </div>
+    </div>
+
+    <!--Right Side-->
+    <div>
+      <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ambiente Corporativo com Fundo Branco"
+       class="w-[400px] h-full hidden rounded-2xl md:block object-cover shadow-lg"
+      />
     </div>
   </div>
 </div>

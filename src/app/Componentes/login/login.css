@@ -1,81 +1,304 @@
-.p-inputtext, .p-password input, .p-button {
-  border: none;
-  box-shadow: none;
-  outline: none;
+/* Paleta branca/laranja/preto */
+.login-gradient {
+  background: linear-gradient(90deg, #ffffff 0%, #ffedd5 100%);
 }
-.p-password { width: 100%; }
-.p-divider .p-divider-content {
-  background: white;
-  padding: 0 1rem;
+
+/* Estilos essenciais para o fundo */
+.relative.overflow-hidden {
+  position: relative;
+  overflow: hidden;
 }
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-.hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.fade-in-up {
-  animation: fadeInUp 0.4s ease-out;
-}
-.gradient-text {
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.shadow-glow {
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-}
-.shadow-glow:hover {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-}
-.focus-ring:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-}
-.smooth-transition {
-  transition: all 0.2s ease;
-}
-.loading {
-  opacity: 0.7;
-  pointer-events: none;
-}
-.loading::after {
-  content: '';
+
+.absolute.inset-0.z-0 {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 16px;
-  height: 16px;
-  margin: -8px 0 0 -8px;
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3b82f6;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.relative.z-10 {
+  position: relative;
+  z-index: 10;
+}
+
+/* Estilos personalizados para o Toast do PrimeNG */
+:host ::ng-deep .p-toast {
+  z-index: 9999;
+}
+
+:host ::ng-deep .p-toast .p-toast-message {
+  margin: 0.75rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  border: none;
+  padding: 0;
+  overflow: hidden;
+  min-width: 320px;
+  max-width: 400px;
+}
+
+:host ::ng-deep .p-toast .p-toast-message-content {
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep .p-toast .p-toast-message-icon {
+  margin: 0;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+:host ::ng-deep .p-toast .p-toast-message-text {
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+:host ::ng-deep .p-toast .p-toast-summary {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+:host ::ng-deep .p-toast .p-toast-detail {
+  font-size: 13px;
+  line-height: 1.3;
+  margin: 0;
+  opacity: 0.9;
+}
+
+:host ::ng-deep .p-toast .p-toast-icon-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.7;
 }
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+
+:host ::ng-deep .p-toast .p-toast-icon-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  opacity: 1;
+  transform: scale(1.1);
 }
-@media (max-width: 640px) {
-  .min-h-screen { padding: 0.5rem; }
-  .max-w-md { width: 100%; }
-  .p-button, .p-inputtext, .p-password input {
-    font-size: 0.875rem;
-    padding: 0.5rem;
+
+/* Toast Info - Azul elegante */
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-info {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px 50px 20px 20px;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-info .p-toast-icon-close {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-info .p-toast-icon-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Toast Success - Verde elegante */
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  padding: 20px 50px 20px 20px;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-success .p-toast-icon-close {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-success .p-toast-icon-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Toast Warning - Amarelo elegante */
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-warn {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 20px 50px 20px 20px;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-warn .p-toast-icon-close {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-warn .p-toast-icon-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Toast Error - Vermelho elegante */
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 20px 50px 20px 20px;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error .p-toast-icon-close {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error .p-toast-icon-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Animações personalizadas */
+:host ::ng-deep .p-toast .p-toast-message {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
-.bg-pattern {
-  background-image: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.2) 2px, transparent 2px);
-  background-size: 20px 20px;
-  opacity: 0.3;
+
+/* Inputs com foco laranja */
+input[type="email"], input[type="password"] {
+  transition: all 0.2s ease-in-out;
 }
+
+input[type="email"]:focus, input[type="password"]:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}
+
+/* Estilos para campos com erro */
+.border-red-500 {
+  border-color: #ef4444;
+}
+
+.border-red-500:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Estilos para campos válidos */
+.border-green-500 {
+  border-color: #10b981;
+}
+
+.border-green-500:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Estilos para o botão de toggle de senha */
+button[type="button"] {
+  transition: all 0.2s ease-in-out;
+}
+
+button[type="button"]:hover {
+  transform: scale(1.1);
+}
+
+/* Estilos para o botão de submit */
+button[type="submit"] {
+  transition: all 0.2s ease-in-out;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button[type="submit"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Estilos para mensagens de erro */
+.text-red-500 {
+  color: #ef4444;
+}
+
+/* Estilos para o checkbox */
+input[type="checkbox"] {
+  accent-color: #6b7280;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.25rem;
+}
+
+/* Links e CTAs laranja */
+a:hover {
+  color: #f97316;
+}
+
+/* Estilos para os ícones SVG */
+svg {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Botão submit laranja quando habilitado */
+button[type="submit"]:not(:disabled) {
+  border-color: #f97316;
+  color: #0f172a;
+}
+
+button[type="submit"]:not(:disabled):hover {
+  background: #f97316;
+  color: #ffffff;
+}
+
+/* Animações */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .px-11 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  .md:px-14 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  /* Toast responsivo */
+  :host ::ng-deep .p-toast .p-toast-message {
+    min-width: 280px;
+    max-width: 90vw;
+    margin: 0.5rem;
+  }
+}
+
+

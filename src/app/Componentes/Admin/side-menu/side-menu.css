@@ -1,0 +1,220 @@
+/* Side Menu - Estilos base */
+.side-menu {
+  width: 320px;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  animation: slideInLeft 0.3s ease-out;
+  overflow-y: auto;
+}
+
+/* Header do menu */
+.side-menu-header {
+  padding: 2rem 1.5rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-container {
+  width: 3rem;
+  height: 3rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* Navegação */
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  margin: 0 0.75rem;
+  border-radius: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateX(4px);
+}
+
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Ícones dos itens de menu */
+.nav-icon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  margin-right: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+/* Texto dos itens de menu */
+.nav-text {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Divisor */
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 1.5rem 1.5rem 0;
+}
+
+/* Footer do menu */
+.side-menu-footer {
+  margin-top: auto;
+  padding: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.user-profile:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.125rem;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  margin-top: 0.75rem;
+  background: rgba(239, 68, 68, 0.2);
+  color: rgba(239, 68, 68, 0.9);
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.logout-button:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: white;
+}
+
+.logout-button svg {
+  margin-right: 0.5rem;
+}
+
+/* Indicador de notificação */
+.notification-indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: #ef4444;
+  border-radius: 50%;
+  margin-left: auto;
+  animation: pulse 2s infinite;
+}
+
+/* Animações */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Estados específicos por categoria */
+.nav-item.dashboard:hover .nav-icon {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.nav-item.users:hover .nav-icon {
+  background: rgba(34, 197, 94, 0.2);
+}
+
+.nav-item.projects:hover .nav-icon {
+  background: rgba(147, 51, 234, 0.2);
+}
+
+.nav-item.tasks:hover .nav-icon {
+  background: rgba(245, 158, 11, 0.2);
+}
+
+.nav-item.teams:hover .nav-icon {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+.nav-item.reports:hover .nav-icon {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.nav-item.settings:hover .nav-icon,
+.nav-item.help:hover .nav-icon {
+  background: rgba(107, 114, 128, 0.2);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .side-menu {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .side-menu-header {
+    padding: 1rem;
+  }
+  
+  .nav-item {
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+}

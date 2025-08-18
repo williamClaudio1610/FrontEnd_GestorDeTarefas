@@ -1,0 +1,243 @@
+/* Main Header Styles */
+.floating-header {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  padding: 8px 14px;
+  background: linear-gradient(90deg, #ffffff 0%, #ebc390 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.floating-header.scrolled {
+  background: linear-gradient(90deg, #ffffff 0%, #ebc390 100%);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.header-spacer {
+  height: 80px;
+}
+
+/* Brand Section */
+.brand-section {
+  min-width: 240px;
+}
+
+.logo-container {
+  transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.brand-text h4 {
+  background: none;
+  -webkit-text-fill-color: initial;
+  background-clip: initial;
+  color: #0f172a;
+  text-shadow: none;
+  font-size: 1.35rem;
+}
+
+.brand-text small {
+  color: #475569;
+  opacity: 1;
+  font-size: 0.9rem;
+}
+
+/* Navigation Buttons */
+:host ::ng-deep .nav-btn .p-button {
+  color: #1f2937 !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 12px !important;
+  padding: 0.65rem 1rem !important;
+  margin-block: 2px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+:host ::ng-deep .nav-btn .p-button:hover {
+  background: rgba(249, 115, 22, 0.12) !important;
+  border-color: rgba(249, 115, 22, 0.25) !important;
+  color: #0f172a !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.2);
+}
+
+:host ::ng-deep .nav-btn.active-nav .p-button {
+  background: #f97316 !important; /* orange-500 */
+  border-color: #f97316 !important;
+  color: white !important;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
+}
+
+/* Search Input */
+.search-container {
+  min-width: 280px;
+}
+
+:host ::ng-deep .search-input.p-inputtext {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 25px !important;
+  padding: 0.7rem 1.1rem 0.7rem 2.6rem !important;
+  color: #0f172a !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+:host ::ng-deep .search-input.p-inputtext:focus {
+  background: #ffffff !important;
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 0.2rem rgba(249, 115, 22, 0.15) !important;
+}
+
+:host ::ng-deep .search-input.p-inputtext::placeholder {
+  color: rgba(100, 116, 139, 0.8) !important;
+}
+
+/* Action Button */
+:host ::ng-deep .action-btn.p-button {
+  background: linear-gradient(135deg, #f59e0b, #f97316) !important;
+  border: none !important;
+  border-radius: 25px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+:host ::ng-deep .action-btn.p-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4) !important;
+  background: linear-gradient(135deg, #fb923c, #f59e0b) !important;
+}
+
+/* Notification Button */
+:host ::ng-deep .notification-btn .p-button {
+  color: #334155 !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  width: 48px !important;
+  height: 48px !important;
+  transition: all 0.3s ease !important;
+}
+
+:host ::ng-deep .notification-btn .p-button:hover {
+  background: rgba(249, 115, 22, 0.12) !important;
+  border-color: #f97316 !important;
+  color: #0f172a !important;
+  transform: scale(1.1);
+}
+
+/* Mobile Menu Toggle */
+:host ::ng-deep .menu-toggle-btn .p-button,
+:host ::ng-deep .mobile-search-btn .p-button {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  width: 48px !important;
+  height: 48px !important;
+  transition: all 0.3s ease !important;
+}
+
+:host ::ng-deep .menu-toggle-btn .p-button:hover,
+:host ::ng-deep .mobile-search-btn .p-button:hover {
+  background: rgba(249, 115, 22, 0.12) !important;
+  border-color: #f97316 !important;
+  color: #0f172a !important;
+}
+
+/* Mobile Menu */
+:host ::ng-deep .mobile-menu.p-menu {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  margin-top: 0.5rem !important;
+  min-width: 200px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+:host ::ng-deep .mobile-menu .p-menuitem-link {
+  color: #0f172a !important;
+  padding: 1rem 1.5rem !important;
+  transition: all 0.3s ease !important;
+  border-radius: 8px !important;
+  margin: 0.25rem !important;
+}
+
+:host ::ng-deep .mobile-menu .p-menuitem-link:hover {
+  background: rgba(249, 115, 22, 0.12) !important;
+  color: #0f172a !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .search-container { min-width: 200px; }
+}
+
+@media (max-width: 768px) {
+  .floating-header { padding: 0; }
+  .header-spacer { height: 70px; }
+  .brand-text h4 { font-size: 1.1rem; }
+  .brand-text small { font-size: 0.75rem; }
+}
+
+@media (max-width: 480px) {
+  .brand-section { min-width: auto; }
+  .brand-text small { display: none; }
+}
+
+/* Animations */
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.floating-header { animation: slideInDown 0.6s ease-out; }
+
+/* Hover Effects */
+.nav-btn, .notification-btn, .menu-toggle-btn, .mobile-search-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-btn::before, .notification-btn::before, 
+.menu-toggle-btn::before, .mobile-search-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  z-index: 0;
+}
+
+.nav-btn:hover::before, .notification-btn:hover::before,
+.menu-toggle-btn:hover::before, .mobile-search-btn:hover::before {
+  width: 100px;
+  height: 100px;
+}
+
+/* CTA button in header */
+:host ::ng-deep .action-btn.p-button {
+  background: linear-gradient(135deg, #f59e0b, #f97316) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 24px !important;
+  padding: 0.6rem 1rem !important;
+  font-weight: 600 !important;
+}
+
+:host ::ng-deep .action-btn.p-button:hover {
+  filter: brightness(1.05);
+}

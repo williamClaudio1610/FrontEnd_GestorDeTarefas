@@ -38,8 +38,8 @@ export class TesteTailwindComponent {
     private messageService: MessageService
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
+      senha: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)]]
     });
   }
 
@@ -48,12 +48,12 @@ export class TesteTailwindComponent {
       this.loading = true;
       const { email, senha } = this.loginForm.value;
       
-      // Simular login
+      // Simular login corporativo
       setTimeout(() => {
         this.messageService.add({
           severity: 'success',
-          summary: 'Sucesso!',
-          detail: `Login realizado com: ${email}`
+          summary: 'Acesso Autorizado',
+          detail: `Bem-vindo ao sistema, ${email.split('@')[0]}!`
         });
         this.loading = false;
       }, 1500);
@@ -61,8 +61,8 @@ export class TesteTailwindComponent {
       this.markFormGroupTouched();
       this.messageService.add({
         severity: 'warn',
-        summary: 'Formulário Inválido',
-        detail: 'Por favor, preencha todos os campos corretamente.'
+        summary: 'Dados Inválidos',
+        detail: 'Por favor, verifique as informações inseridas e tente novamente.'
       });
     }
   }
@@ -82,13 +82,19 @@ export class TesteTailwindComponent {
     const field = this.loginForm.get(fieldName);
     if (field?.invalid && field?.touched) {
       if (field.errors?.['required']) {
-        return `${fieldName === 'email' ? 'Email' : 'Senha'} é obrigatório`;
+        return `${fieldName === 'email' ? 'Email corporativo' : 'Senha'} é obrigatório`;
       }
       if (field.errors?.['email']) {
-        return 'Por favor, insira um email válido';
+        return 'Por favor, insira um email corporativo válido';
       }
-      if (field.errors?.['minlength']) {
-        return 'Senha deve ter pelo menos 6 caracteres';
+      if (field.errors?.['pattern'] && fieldName === 'email') {
+        return 'Formato de email inválido';
+      }
+      if (field.errors?.['minlength'] && fieldName === 'senha') {
+        return 'Senha deve ter pelo menos 8 caracteres';
+      }
+      if (field.errors?.['pattern'] && fieldName === 'senha') {
+        return 'Senha deve conter maiúscula, minúscula, número e caractere especial';
       }
     }
     return '';
@@ -102,11 +108,35 @@ export class TesteTailwindComponent {
   getFieldClasses(fieldName: string): string {
     const field = this.loginForm.get(fieldName);
     if (field?.invalid && field?.touched) {
-      return 'border-red-500';
+      return 'border-danger';
     }
-    if (field?.touched) {
-      return 'border-green-500';
+    if (field?.touched && field?.valid) {
+      return 'border-success';
     }
-    return 'border-gray-300';
+    return 'border-slate-300';
+  }
+
+  // Método para verificar se o campo está válido
+  isFieldValid(fieldName: string): boolean {
+    const field = this.loginForm.get(fieldName);
+    return !!(field?.valid && field?.touched);
+  }
+
+  // Método para obter a força da senha
+  getPasswordStrength(): string {
+    const senha = this.loginForm.get('senha')?.value;
+    if (!senha) return '';
+    
+    let strength = 0;
+    if (senha.length >= 8) strength++;
+    if (/[a-z]/.test(senha)) strength++;
+    if (/[A-Z]/.test(senha)) strength++;
+    if (/\d/.test(senha)) strength++;
+    if (/[@$!%*?&]/.test(senha)) strength++;
+    
+    if (strength <= 2) return 'fraca';
+    if (strength <= 3) return 'média';
+    if (strength <= 4) return 'forte';
+    return 'muito forte';
   }
 }

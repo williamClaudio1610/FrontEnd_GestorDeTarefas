@@ -45,6 +45,9 @@ export class Login {
     private router: Router,
     private messageService: MessageService
   ) {
+    console.log('Login component inicializado');
+    console.log('MessageService injetado:', this.messageService);
+    
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]]
@@ -69,11 +72,29 @@ export class Login {
           }, 1500);
         },
         error: (error: any) => {
+          console.error('Erro no login:', error);
+          
+          let errorMessage = 'Erro ao fazer login.';
+          
+          if (error.status === 0) {
+            errorMessage = 'Servidor não está respondendo. Verifique sua conexão.';
+          } else if (error.status === 401) {
+            errorMessage = 'Credenciais inválidas. Verifique seu email e senha.';
+          } else if (error.status === 500) {
+            errorMessage = 'Erro interno do servidor. Tente novamente.';
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+          
           this.messageService.add({
             severity: 'error',
             summary: 'Erro no Login',
-            detail: error.error?.message || 'Credenciais inválidas. Verifique seu email e senha.'
+            detail: errorMessage,
+            life: 5000
           });
+          
           this.loading = false;
         },
         complete: () => {
@@ -85,7 +106,8 @@ export class Login {
       this.messageService.add({
         severity: 'warn',
         summary: 'Formulário Inválido',
-        detail: 'Por favor, preencha todos os campos corretamente.'
+        detail: 'Por favor, preencha todos os campos corretamente.',
+        life: 3000
       });
     }
   }
@@ -134,4 +156,24 @@ export class Login {
     }
     return '';
   }
+
+  // Método de teste para verificar se os toasts estão funcionando
+  /*
+  testToast() {
+    console.log('Testando toast...');
+    console.log('MessageService:', this.messageService);
+    
+    try {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Teste',
+        detail: 'Este é um teste para verificar se os toasts estão funcionando.',
+        life: 3000
+      });
+      console.log('Toast adicionado com sucesso');
+    } catch (error) {
+      console.error('Erro ao adicionar toast:', error);
+    }
+  }
+    */
 }

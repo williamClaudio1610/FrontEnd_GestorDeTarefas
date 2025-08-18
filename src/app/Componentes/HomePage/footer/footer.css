@@ -1,0 +1,109 @@
+/* Estilos para o footer do TaskManager - Design Dark e Flutuante */
+
+/* Footer flutuante */
+.floating-footer {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(90deg, #ffffff 0%, #ebc390 100%);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
+  color: #0f172a;
+}
+
+/* Force readable text colors inside footer */
+.floating-footer h1,
+.floating-footer h2,
+.floating-footer h3,
+.floating-footer h4,
+.floating-footer h5,
+.floating-footer h6,
+.floating-footer p,
+.floating-footer span,
+.floating-footer li,
+.floating-footer a,
+.floating-footer .text-white,
+.floating-footer .text-light {
+  color: #0f172a !important;
+}
+
+/* Links hover in orange */
+.floating-footer a:hover {
+  color: #f97316 !important;
+}
+
+/* Icon color for visibility */
+.floating-footer .pi {
+  color: #f97316 !important;
+}
+
+/* Links com hover effect */
+.hover-primary {
+  transition: all 0.3s ease;
+}
+
+.hover-primary:hover {
+  color: #0284c7 !important;
+  transform: translateY(-2px);
+}
+
+/* Ícones das redes sociais */
+.hover-primary i {
+  transition: all 0.3s ease;
+}
+
+.hover-primary:hover i {
+  transform: scale(1.2);
+}
+
+/* Lista de links */
+.list-unstyled li {
+  transition: all 0.3s ease;
+}
+
+.list-unstyled li:hover {
+  transform: translateX(5px);
+}
+
+.list-unstyled a {
+  transition: all 0.3s ease;
+}
+
+.list-unstyled a:hover {
+  color: #0284c7 !important;
+  text-decoration: none;
+}
+
+/* Ícones de contacto */
+.pi {
+  transition: all 0.3s ease;
+}
+
+.hover-primary:hover .pi {
+  transform: scale(1.1);
+}
+
+/* Responsividade */
+@media (max-width: 991.98px) {
+  .floating-footer {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-footer {
+    border-radius: 0;
+  }
+  
+  .text-md-end {
+    text-align: left !important;
+  }
+  
+  .d-flex.gap-4.justify-content-md-end {
+    justify-content: flex-start !important;
+  }
+}
+
+/* Animações suaves */
+.floating-footer * {
+  transition: all 0.3s ease;
+}

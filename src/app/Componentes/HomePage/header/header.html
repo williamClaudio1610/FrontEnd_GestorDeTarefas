@@ -1,0 +1,114 @@
+<header class="floating-header" [ngClass]="{'scrolled': isScrolled}">
+  <div class="container-fluid px-4">
+    <div class="flex align-items-center justify-content-between gap-4 py-3">
+      
+      <!-- Brand/Logo Section -->
+      <div class="brand-section flex align-items-center gap-3">
+        <div class="logo-container">
+          <i class="pi pi-check-circle text-4xl text-primary"></i>
+        </div>
+        <div class="brand-text">
+          <h4 class="m-0 text-orange font-bold">TaskManager</h4>
+          <small class="text-300 text-sm">Gerencie suas tarefas</small>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav-desktop hidden lg:flex align-items-center gap-2">
+        <p-button 
+          label="Home" 
+          [text]="true"
+          routerLink="/" 
+          routerLinkActive="active-nav"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-btn">
+        </p-button>
+        <p-button 
+          label="Planos" 
+          [text]="true"
+          routerLink="/planos" 
+          routerLinkActive="active-nav"
+          class="nav-btn">
+        </p-button>
+        <p-button 
+          label="Soluções" 
+          [text]="true"
+          routerLink="/solucoes" 
+          routerLinkActive="active-nav"
+          class="nav-btn">
+        </p-button>
+        <p-button 
+          label="Sobre Nós" 
+          [text]="true"
+          routerLink="/sobre-nos" 
+          routerLinkActive="active-nav"
+          class="nav-btn">
+        </p-button>
+        <p-button 
+          label="Aderir Serviços" 
+          [text]="true"
+          routerLink="/aderir-servicos" 
+          routerLinkActive="active-nav"
+          class="nav-btn">
+        </p-button>
+      </nav>
+
+      <!-- Right Section with Actions -->
+      <div class="right-section hidden md:flex align-items-center gap-3">
+        <!-- Search Input 
+        <div class="search-container">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search text-400"></i>
+            <input pInputText 
+              placeholder="Buscar..." 
+              class="search-input border-none bg-transparent text-white" />
+          </span>
+        </div>
+        -->
+        <!-- Notifications 
+        <p-button 
+          icon="pi pi-bell" 
+          [text]="true"
+          [rounded]="true"
+          pTooltip="Notificações"
+          tooltipPosition="bottom"
+          class="notification-btn">
+        </p-button>
+        -->
+        <p-button 
+          label="Entrar em contacto" 
+          icon="pi pi-rocket"
+          styleClass="action-btn"
+          [raised]="true">
+        </p-button>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <div class="mobile-section flex lg:hidden align-items-center gap-2">
+        <p-button 
+          icon="pi pi-search" 
+          [text]="true"
+          [rounded]="true"
+          class="mobile-search-btn">
+        </p-button>
+        <p-button 
+          icon="pi pi-bars" 
+          [text]="true"
+          [rounded]="true"
+          (onClick)="onToggleMenu($event)"
+          class="menu-toggle-btn">
+        </p-button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <p-menu 
+      #menu 
+      [model]="menuItems" 
+      [popup]="true"
+      styleClass="mobile-menu">
+    </p-menu>
+  </div>
+</header>
+
+<!-- Spacer removed -->
