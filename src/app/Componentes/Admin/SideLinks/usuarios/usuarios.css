@@ -1,7 +1,12 @@
 /* Estilos base da tela de usuários */
-.font-poppins {
-  font-family: 'Poppins', sans-serif;
-}
+.font-poppins { font-family: 'Poppins', sans-serif; }
+
+/* Ajustes para novo menu lateral (branco/preto) */
+.content-container { padding: 0; }
+.bg-white { background-color: #ffffff; }
+.border-gray-200 { border-color: #e5e7eb; }
+.text-gray-800 { color: #1f2937; }
+.text-gray-600 { color: #4b5563; }
 
 /* Animações de entrada */
 @keyframes fadeInUp {

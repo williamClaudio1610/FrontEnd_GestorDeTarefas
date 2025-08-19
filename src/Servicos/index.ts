@@ -8,3 +8,4 @@ export * from './projecto.service';
 export * from './equipe.service';
 export * from './notificacao.service';
 export * from './http-interceptor.service';
+export * from './theme.service';

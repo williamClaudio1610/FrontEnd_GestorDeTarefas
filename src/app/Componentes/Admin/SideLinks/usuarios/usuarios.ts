@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // Importar modelos do sistema
-import { Usuario, Cargo, Equipe, EstadoUsuario, NivelHierarquico, Role } from '../../../../../Modelos';
+import { Usuario, Cargo, Equipe, EstadoUsuario, NivelHierarquico, Role, CriarUsuario } from '../../../../../Modelos';
+import { UsuarioService, CargoService, EquipeService, NotificacaoService } from '../../../../../Servicos';
 
 @Component({
   selector: 'app-usuarios',
@@ -38,7 +39,48 @@ export class UsuariosComponent implements OnInit {
   pendingUsers = 0;
   inactiveUsers = 0;
 
-  constructor(private router: Router) {}
+  // Modal de novo usuário
+  isAddUserOpen = false;
+  isSavingUser = false;
+  newUser: CriarUsuario = {
+    nome: '',
+    email: '',
+    telefone: '',
+    senha: '',
+    cargoId: 0,
+    nivelHierarquico: NivelHierarquico.JUNIOR,
+    estado: EstadoUsuario.ATIVO,
+    role: Role.USER
+  };
+
+  // Opções para selects
+  nivelOptions = [
+    { value: NivelHierarquico.ESTAGIARIO, label: 'Estagiário' },
+    { value: NivelHierarquico.JUNIOR, label: 'Júnior' },
+    { value: NivelHierarquico.PLENO, label: 'Pleno' },
+    { value: NivelHierarquico.SENIOR, label: 'Sênior' },
+    { value: NivelHierarquico.LIDER, label: 'Líder' },
+    { value: NivelHierarquico.GERENTE, label: 'Gerente' },
+    { value: NivelHierarquico.DIRETOR, label: 'Diretor' }
+  ];
+  estadoOptions = [
+    { value: EstadoUsuario.ATIVO, label: 'Ativo' },
+    { value: EstadoUsuario.INATIVO, label: 'Inativo' },
+    { value: EstadoUsuario.SUSPENSO, label: 'Suspenso' },
+    { value: EstadoUsuario.DEMITIDO, label: 'Demitido' }
+  ];
+  roleOptions = [
+    { value: Role.USER, label: 'Usuário' },
+    { value: Role.ADMIN, label: 'Administrador' }
+  ];
+
+  constructor(
+    private router: Router,
+    private usuarioService: UsuarioService,
+    private cargoService: CargoService,
+    private equipeService: EquipeService,
+    private notificacao: NotificacaoService
+  ) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -47,113 +89,54 @@ export class UsuariosComponent implements OnInit {
     this.calculateStatistics();
   }
 
-  // Carregar usuários (mock data - substituir por chamada real da API)
+  // Carregar usuários da API
   loadUsers() {
-    // Dados mock para demonstração usando os enums corretos
-    this.users = [
-      {
-        id: 1,
-        nome: 'João Silva',
-        email: 'joao.silva@gestor.com',
-        telefone: '+351 912 345 678',
-        cargoId: 1,
-        nivelHierarquico: NivelHierarquico.PLENO,
-        estado: EstadoUsuario.ATIVO,
-        role: Role.USER,
-        equipas: [
-          { id: 1, nome: 'TI', descricao: 'Equipe de Tecnologia da Informação' }
-        ],
-        createdAt: new Date('2023-01-15'),
-        updatedAt: new Date('2024-01-15')
+    this.usuarioService.getUsuarios().subscribe({
+      next: (usuarios) => {
+        const list: any[] = Array.isArray(usuarios)
+          ? (usuarios as any[])
+          : ((usuarios as any)?.data ?? []);
+        // Converter datas se vierem como string
+        this.users = (list as unknown as Usuario[]).map(u => ({
+          ...u,
+          createdAt: u.createdAt ? new Date(u.createdAt as unknown as string) : undefined,
+          updatedAt: u.updatedAt ? new Date(u.updatedAt as unknown as string) : undefined
+        }));
+        this.filteredUsers = [...this.users];
+        this.totalUsers = this.users.length;
+        this.calculateStatistics();
+        this.calculatePagination();
       },
-      {
-        id: 2,
-        nome: 'Maria Santos',
-        email: 'maria.santos@gestor.com',
-        telefone: '+351 923 456 789',
-        cargoId: 2,
-        nivelHierarquico: NivelHierarquico.SENIOR,
-        estado: EstadoUsuario.ATIVO,
-        role: Role.USER,
-        equipas: [
-          { id: 2, nome: 'Design', descricao: 'Equipe de Design e UX' }
-        ],
-        createdAt: new Date('2022-06-20'),
-        updatedAt: new Date('2024-01-15')
-      },
-      {
-        id: 3,
-        nome: 'Pedro Costa',
-        email: 'pedro.costa@gestor.com',
-        telefone: '+351 934 567 890',
-        cargoId: 1,
-        nivelHierarquico: NivelHierarquico.JUNIOR,
-        estado: EstadoUsuario.ATIVO,
-        role: Role.USER,
-        equipas: [
-          { id: 1, nome: 'TI', descricao: 'Equipe de Tecnologia da Informação' }
-        ],
-        createdAt: new Date('2024-01-10'),
-        updatedAt: new Date('2024-01-10')
-      },
-      {
-        id: 4,
-        nome: 'Ana Oliveira',
-        email: 'ana.oliveira@gestor.com',
-        telefone: '+351 945 678 901',
-        cargoId: 3,
-        nivelHierarquico: NivelHierarquico.GERENTE,
-        estado: EstadoUsuario.INATIVO,
-        role: Role.ADMIN,
-        equipas: [
-          { id: 3, nome: 'Administração', descricao: 'Equipe de Administração' }
-        ],
-        createdAt: new Date('2021-03-15'),
-        updatedAt: new Date('2024-01-10')
-      },
-      {
-        id: 5,
-        nome: 'Carlos Ferreira',
-        email: 'carlos.ferreira@gestor.com',
-        telefone: '+351 956 789 012',
-        cargoId: 4,
-        nivelHierarquico: NivelHierarquico.PLENO,
-        estado: EstadoUsuario.ATIVO,
-        role: Role.USER,
-        equipas: [
-          { id: 4, nome: 'Marketing', descricao: 'Equipe de Marketing Digital' }
-        ],
-        createdAt: new Date('2023-08-22'),
-        updatedAt: new Date('2024-01-15')
+      error: () => {
+        this.notificacao.erroGenerico('Falha ao carregar usuários.');
       }
-    ];
-
-    this.filteredUsers = [...this.users];
-    this.totalUsers = this.users.length;
-    this.calculateStatistics();
-    this.calculatePagination();
+    });
   }
 
-  // Carregar cargos (mock data)
+  // Carregar cargos da API
   loadCargos() {
-    this.cargos = [
-      { id: 1, nome: 'Desenvolvedor', descricao: 'Desenvolvimento de software' },
-      { id: 2, nome: 'Designer', descricao: 'Design de interfaces e UX' },
-      { id: 3, nome: 'Gerente', descricao: 'Gestão de equipes e projetos' },
-      { id: 4, nome: 'Analista', descricao: 'Análise de dados e processos' },
-      { id: 5, nome: 'Estagiário', descricao: 'Estágio em desenvolvimento' }
-    ];
+    this.cargoService.getCargos().subscribe({
+      next: (cargos) => {
+        const list: any[] = Array.isArray(cargos)
+          ? (cargos as any[])
+          : ((cargos as any)?.data ?? []);
+        this.cargos = list as any;
+      },
+      error: () => this.notificacao.erroGenerico('Falha ao carregar cargos.')
+    });
   }
 
-  // Carregar equipes (mock data)
+  // Carregar equipes da API
   loadEquipes() {
-    this.equipes = [
-      { id: 1, nome: 'TI', descricao: 'Equipe de Tecnologia da Informação' },
-      { id: 2, nome: 'Design', descricao: 'Equipe de Design e UX' },
-      { id: 3, nome: 'Administração', descricao: 'Equipe de Administração' },
-      { id: 4, nome: 'Marketing', descricao: 'Equipe de Marketing Digital' },
-      { id: 5, nome: 'Vendas', descricao: 'Equipe de Vendas e Relacionamento' }
-    ];
+    this.equipeService.getEquipes().subscribe({
+      next: (equipes) => {
+        const list: any[] = Array.isArray(equipes)
+          ? (equipes as any[])
+          : ((equipes as any)?.data ?? []);
+        this.equipes = list as unknown as Equipe[];
+      },
+      error: () => this.notificacao.erroGenerico('Falha ao carregar equipes.')
+    });
   }
 
   // Busca em tempo real
@@ -220,8 +203,44 @@ export class UsuariosComponent implements OnInit {
 
   // Abrir modal de adicionar usuário
   openAddUserModal() {
-    // Implementar modal de adicionar usuário
-    console.log('Abrir modal de adicionar usuário');
+    this.newUser = {
+      nome: '',
+      email: '',
+      telefone: '',
+      senha: '',
+      cargoId: this.cargos[0]?.id || 0,
+      nivelHierarquico: NivelHierarquico.JUNIOR,
+      estado: EstadoUsuario.ATIVO,
+      role: Role.USER
+    };
+    this.isAddUserOpen = true;
+  }
+
+  // Fechar modal
+  closeAddUserModal() {
+    this.isAddUserOpen = false;
+  }
+
+  // Salvar novo usuário
+  saveNewUser() {
+    if (!this.newUser.nome || !this.newUser.email || !this.newUser.senha || !this.newUser.cargoId) {
+      this.notificacao.erroValidacao('Preencha nome, email, senha e cargo.');
+      return;
+    }
+
+    this.isSavingUser = true;
+    this.usuarioService.criarUsuario(this.newUser).subscribe({
+      next: () => {
+        this.isSavingUser = false;
+        this.isAddUserOpen = false;
+        this.notificacao.sucesso('Usuário Criado', 'O usuário foi criado com sucesso.');
+        this.loadUsers();
+      },
+      error: () => {
+        this.isSavingUser = false;
+        this.notificacao.erroGenerico('Não foi possível criar o usuário.');
+      }
+    });
   }
 
   // Ver usuário

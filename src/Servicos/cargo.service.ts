@@ -16,7 +16,7 @@ export class CargoService {
    */
   getCargos(): Observable<Cargo[]> {
     return this.http.get<Cargo[]>(
-      buildApiUrl(API_CONFIG.ENDPOINTS.CARGOS),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/listar`),
       { headers: getAuthHeaders() }
     );
   }
@@ -26,17 +26,7 @@ export class CargoService {
    */
   getCargoById(id: number): Observable<Cargo> {
     return this.http.get<Cargo>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/${id}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter cargo por nome
-   */
-  getCargoByNome(nome: string): Observable<Cargo> {
-    return this.http.get<Cargo>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/nome/${nome}`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/buscar/${id}`),
       { headers: getAuthHeaders() }
     );
   }
@@ -46,7 +36,7 @@ export class CargoService {
    */
   criarCargo(cargo: CriarCargo): Observable<Cargo> {
     return this.http.post<Cargo>(
-      buildApiUrl(API_CONFIG.ENDPOINTS.CARGOS),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/criar`),
       cargo,
       { headers: getAuthHeaders() }
     );
@@ -57,7 +47,7 @@ export class CargoService {
    */
   atualizarCargo(id: number, cargo: AtualizarCargo): Observable<Cargo> {
     return this.http.put<Cargo>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/${id}`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/atualizar/${id}`),
       cargo,
       { headers: getAuthHeaders() }
     );
@@ -68,47 +58,7 @@ export class CargoService {
    */
   excluirCargo(id: number): Observable<any> {
     return this.http.delete(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/${id}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter usuários por cargo
-   */
-  getUsuariosPorCargo(cargoId: number): Observable<any[]> {
-    return this.http.get<any[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/${cargoId}/usuarios`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Verificar se cargo pode ser excluído (sem usuários associados)
-   */
-  podeExcluirCargo(id: number): Observable<{ podeExcluir: boolean; motivo?: string }> {
-    return this.http.get<{ podeExcluir: boolean; motivo?: string }>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/${id}/pode-excluir`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter estatísticas do cargo
-   */
-  getEstatisticasCargo(id: number): Observable<{
-    totalUsuarios: number;
-    usuariosAtivos: number;
-    usuariosInativos: number;
-    nivelHierarquicoMaisComum: string;
-  }> {
-    return this.http.get<{
-      totalUsuarios: number;
-      usuariosAtivos: number;
-      usuariosInativos: number;
-      nivelHierarquicoMaisComum: string;
-    }>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/${id}/estatisticas`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.CARGOS}/deletar/${id}`),
       { headers: getAuthHeaders() }
     );
   }

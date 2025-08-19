@@ -11,6 +11,5 @@ import { SideMenuComponent } from '../side-menu/side-menu';
   styleUrl: './admin-layout.css'
 })
 export class AdminLayoutComponent {
-  // Este componente serve como layout principal para todas as páginas admin
-  // Ele renderiza o side-menu e o conteúdo da rota atual através do router-outlet
+  isMenuCollapsed = false;
 }

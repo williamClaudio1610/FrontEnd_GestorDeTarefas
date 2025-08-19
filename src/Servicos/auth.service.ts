@@ -38,15 +38,7 @@ export class AuthService {
     );
   }
 
-  /**
-   * Registrar novo usuário
-   */
-  register(userData: CriarUsuario): Observable<UsuarioResposta> {
-    return this.http.post<UsuarioResposta>(
-      buildApiUrl(API_CONFIG.ENDPOINTS.AUTH + '/register'),
-      userData
-    );
-  }
+  // Registro removido (não há endpoint no backend atual)
 
   /**
    * Fazer logout do usuário
@@ -143,14 +135,5 @@ export class AuthService {
     );
   }
 
-  /**
-   * Alterar senha
-   */
-  changePassword(oldPassword: string, newPassword: string): Observable<any> {
-    return this.http.post<any>(
-      buildApiUrl(API_CONFIG.ENDPOINTS.AUTH + '/change-password'),
-      { oldPassword, newPassword },
-      { headers: getAuthHeaders() }
-    );
-  }
+  // Alteração de senha removida (não há endpoint no backend atual)
 }

@@ -1,11 +1,11 @@
 <div class="flex h-screen bg-gray-50">
   <!-- Side Menu -->
-  <app-side-menu></app-side-menu>
+  <app-side-menu (collapsedChange)="isMenuCollapsed = $event"></app-side-menu>
   
   <!-- Conteúdo Principal -->
-  <main class="flex-1 overflow-auto ml-80">
+  <main class="flex-1 overflow-auto" [ngStyle]="{ 'margin-left.px': isMenuCollapsed ? 72 : 240 }">
     <!-- Header da página (opcional) -->
-    <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+    <header class="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-2xl font-semibold text-gray-900">Painel Administrativo</h1>

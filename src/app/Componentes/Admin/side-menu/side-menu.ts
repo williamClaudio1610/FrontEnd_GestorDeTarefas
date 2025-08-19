@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { ThemeService } from '../../../../Servicos/theme.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -9,10 +10,15 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './side-menu.html',
   styleUrl: './side-menu.css'
 })
-export class SideMenuComponent {
+export class SideMenuComponent implements OnInit {
   // Estado do menu
   isCollapsed = false;
   activeMenuItem = 'dashboard';
+
+  @Output() collapsedChange = new EventEmitter<boolean>();
+
+  // Tema claro/escuro
+  isDarkTheme = false;
 
   // Dados do usuário (mock - substituir por dados reais)
   currentUser = {
@@ -32,6 +38,13 @@ export class SideMenuComponent {
       color: 'blue'
     },
     {
+      id: 'cargos',
+      label: 'Cargos',
+      icon: 'briefcase',
+      route: '/admin/cargos',
+      color: 'orange'
+    },
+    {
       id: 'users',
       label: 'Usuários',
       icon: 'users',
@@ -39,25 +52,18 @@ export class SideMenuComponent {
       color: 'green',
       hasNotification: true
     },
-    /*{
-      id: 'projects',
+    {
+      id: 'projectos',
       label: 'Projetos',
       icon: 'projects',
-      route: '/admin/projects',
+      route: '/admin/projectos',
       color: 'purple'
-    },*/
-    /*{
-      id: 'tasks',
-      label: 'Tarefas',
-      icon: 'tasks',
-      route: '/admin/tasks',
-      color: 'orange'
-    },*/
+    },
     {
-      id: 'teams',
+      id: 'equipes',
       label: 'Equipes',
       icon: 'teams',
-      route: '/admin/teams',
+      route: '/admin/equipes',
       color: 'indigo'
     },
     {
@@ -87,11 +93,24 @@ export class SideMenuComponent {
     }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private theme: ThemeService) {}
+
+  ngOnInit(): void {
+    this.theme.init();
+    this.isDarkTheme = this.theme.isDark();
+    this.collapsedChange.emit(this.isCollapsed);
+  }
 
   // Alternar estado do menu (colapsar/expandir)
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
+    this.collapsedChange.emit(this.isCollapsed);
+  }
+
+  // Alternar tema claro/escuro
+  toggleTheme() {
+    this.theme.toggle();
+    this.isDarkTheme = this.theme.isDark();
   }
 
   // Navegar para uma rota
@@ -118,26 +137,18 @@ export class SideMenuComponent {
 
   // Obter classes CSS para um item do menu
   getMenuItemClasses(item: any): string {
-    const baseClasses = 'flex items-center space-x-3 p-3 rounded-xl text-gray-700 transition-all duration-200 group nav-item';
-    const colorClasses = `hover:bg-${item.color}-50 hover:text-${item.color}-600`;
+    const baseClasses = 'nav-item';
     const activeClasses = this.isActive(item.id) ? 'active' : '';
-    
-    return `${baseClasses} ${colorClasses} ${activeClasses}`;
+    return `${baseClasses} ${activeClasses}`;
   }
 
   // Obter classes CSS para o ícone de um item
   getIconClasses(item: any): string {
-    const baseClasses = 'w-8 h-8 rounded-lg flex items-center justify-center transition-colors nav-icon';
-    const colorClasses = `bg-${item.color}-100 group-hover:bg-${item.color}-200`;
-    
-    return `${baseClasses} ${colorClasses}`;
+    return 'nav-icon';
   }
 
   // Obter classes CSS para o texto de um item
   getTextClasses(item: any): string {
-    const baseClasses = 'font-medium';
-    const activeClasses = this.isActive(item.id) ? 'text-white' : '';
-    
-    return `${baseClasses} ${activeClasses}`;
+    return 'nav-text';
   }
 }

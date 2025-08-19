@@ -16,7 +16,7 @@ export class UsuarioService {
    */
   getUsuarios(): Observable<UsuarioResposta[]> {
     return this.http.get<UsuarioResposta[]>(
-      buildApiUrl(API_CONFIG.ENDPOINTS.USUARIOS),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/listar`),
       { headers: getAuthHeaders() }
     );
   }
@@ -26,17 +26,7 @@ export class UsuarioService {
    */
   getUsuarioById(id: number): Observable<UsuarioResposta> {
     return this.http.get<UsuarioResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/${id}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter usuário por email
-   */
-  getUsuarioByEmail(email: string): Observable<UsuarioResposta> {
-    return this.http.get<UsuarioResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/email/${email}`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/buscar/${id}`),
       { headers: getAuthHeaders() }
     );
   }
@@ -46,7 +36,7 @@ export class UsuarioService {
    */
   criarUsuario(usuario: CriarUsuario): Observable<UsuarioResposta> {
     return this.http.post<UsuarioResposta>(
-      buildApiUrl(API_CONFIG.ENDPOINTS.USUARIOS),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/criar`),
       usuario,
       { headers: getAuthHeaders() }
     );
@@ -57,7 +47,7 @@ export class UsuarioService {
    */
   atualizarUsuario(id: number, usuario: AtualizarUsuario): Observable<UsuarioResposta> {
     return this.http.put<UsuarioResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/${id}`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/atualizar/${id}`),
       usuario,
       { headers: getAuthHeaders() }
     );
@@ -68,92 +58,7 @@ export class UsuarioService {
    */
   excluirUsuario(id: number): Observable<any> {
     return this.http.delete(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/${id}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Ativar usuário
-   */
-  ativarUsuario(id: number): Observable<UsuarioResposta> {
-    return this.http.patch<UsuarioResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/${id}/ativar`),
-      {},
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Desativar usuário
-   */
-  desativarUsuario(id: number): Observable<UsuarioResposta> {
-    return this.http.patch<UsuarioResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/${id}/desativar`),
-      {},
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Suspender usuário
-   */
-  suspenderUsuario(id: number): Observable<UsuarioResposta> {
-    return this.http.patch<UsuarioResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/${id}/suspender`),
-      {},
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter usuários por equipe
-   */
-  getUsuariosPorEquipe(equipeId: number): Observable<UsuarioResposta[]> {
-    return this.http.get<UsuarioResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/equipe/${equipeId}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter usuários por projeto
-   */
-  getUsuariosPorProjeto(projetoId: number): Observable<UsuarioResposta[]> {
-    return this.http.get<UsuarioResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/projeto/${projetoId}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter usuários por cargo
-   */
-  getUsuariosPorCargo(cargoId: number): Observable<UsuarioResposta[]> {
-    return this.http.get<UsuarioResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/cargo/${cargoId}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Alterar senha do usuário
-   */
-  alterarSenha(id: number, oldPassword: string, newPassword: string): Observable<any> {
-    return this.http.post(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/${id}/alterar-senha`),
-      { oldPassword, newPassword },
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Redefinir senha do usuário (admin)
-   */
-  redefinirSenha(id: number, newPassword: string): Observable<any> {
-    return this.http.post(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/${id}/redefinir-senha`),
-      { newPassword },
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/deletar/${id}`),
       { headers: getAuthHeaders() }
     );
   }
@@ -163,19 +68,9 @@ export class UsuarioService {
    */
   getPerfil(): Observable<UsuarioResposta> {
     return this.http.get<UsuarioResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/perfil`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/perfil/meu`),
       { headers: getAuthHeaders() }
     );
   }
 
-  /**
-   * Atualizar perfil do usuário atual
-   */
-  atualizarPerfil(usuario: AtualizarUsuario): Observable<UsuarioResposta> {
-    return this.http.put<UsuarioResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/perfil`),
-      usuario,
-      { headers: getAuthHeaders() }
-    );
-  }
 }

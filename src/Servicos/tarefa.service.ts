@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { buildApiUrl, getAuthHeaders, API_CONFIG } from './api.config';
-import { Tarefa, CriarTarefa, AtualizarTarefa, TarefaResposta, EstadoTarefa, RelevanciaTarefa } from '../Modelos';
+import { Tarefa, CriarTarefa, AtualizarTarefa, TarefaResposta } from '../Modelos';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class TarefaService {
    */
   getTarefas(): Observable<TarefaResposta[]> {
     return this.http.get<TarefaResposta[]>(
-      buildApiUrl(API_CONFIG.ENDPOINTS.TAREFAS),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/listar`),
       { headers: getAuthHeaders() }
     );
   }
@@ -26,7 +26,7 @@ export class TarefaService {
    */
   getTarefaById(id: number): Observable<TarefaResposta> {
     return this.http.get<TarefaResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/${id}`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/buscar/${id}`),
       { headers: getAuthHeaders() }
     );
   }
@@ -36,7 +36,7 @@ export class TarefaService {
    */
   criarTarefa(tarefa: CriarTarefa): Observable<TarefaResposta> {
     return this.http.post<TarefaResposta>(
-      buildApiUrl(API_CONFIG.ENDPOINTS.TAREFAS),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/criar`),
       tarefa,
       { headers: getAuthHeaders() }
     );
@@ -47,7 +47,7 @@ export class TarefaService {
    */
   atualizarTarefa(id: number, tarefa: AtualizarTarefa): Observable<TarefaResposta> {
     return this.http.put<TarefaResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/${id}`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/atualizar/${id}`),
       tarefa,
       { headers: getAuthHeaders() }
     );
@@ -58,91 +58,7 @@ export class TarefaService {
    */
   excluirTarefa(id: number): Observable<any> {
     return this.http.delete(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/${id}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Alterar estado da tarefa
-   */
-  alterarEstado(id: number, estado: EstadoTarefa): Observable<TarefaResposta> {
-    return this.http.patch<TarefaResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/${id}/estado`),
-      { estado },
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Alterar relevância da tarefa
-   */
-  alterarRelevancia(id: number, relevancia: RelevanciaTarefa): Observable<TarefaResposta> {
-    return this.http.patch<TarefaResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/${id}/relevancia`),
-      { relevancia },
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Atribuir responsável à tarefa
-   */
-  atribuirResponsavel(id: number, responsavelId: number): Observable<TarefaResposta> {
-    return this.http.patch<TarefaResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/${id}/responsavel`),
-      { responsavelId },
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Remover responsável da tarefa
-   */
-  removerResponsavel(id: number): Observable<TarefaResposta> {
-    return this.http.patch<TarefaResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/${id}/remover-responsavel`),
-      {},
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter tarefas por responsável
-   */
-  getTarefasPorResponsavel(responsavelId: number): Observable<TarefaResposta[]> {
-    return this.http.get<TarefaResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/responsavel/${responsavelId}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter tarefas por projeto
-   */
-  getTarefasPorProjeto(projectoId: number): Observable<TarefaResposta[]> {
-    return this.http.get<TarefaResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/projeto/${projectoId}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter tarefas por estado
-   */
-  getTarefasPorEstado(estado: EstadoTarefa): Observable<TarefaResposta[]> {
-    return this.http.get<TarefaResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/estado/${estado}`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Obter tarefas por relevância
-   */
-  getTarefasPorRelevancia(relevancia: RelevanciaTarefa): Observable<TarefaResposta[]> {
-    return this.http.get<TarefaResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/relevancia/${relevancia}`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/deletar/${id}`),
       { headers: getAuthHeaders() }
     );
   }
@@ -152,7 +68,7 @@ export class TarefaService {
    */
   getTarefasVencidas(): Observable<TarefaResposta[]> {
     return this.http.get<TarefaResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/vencidas`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/buscar/vencidas`),
       { headers: getAuthHeaders() }
     );
   }
@@ -162,7 +78,7 @@ export class TarefaService {
    */
   getTarefasProximasVencimento(dias: number = 7): Observable<TarefaResposta[]> {
     return this.http.get<TarefaResposta[]>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/proximas-vencimento/${dias}`),
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/buscar/proximas-vencimento`),
       { headers: getAuthHeaders() }
     );
   }
@@ -170,58 +86,5 @@ export class TarefaService {
   /**
    * Obter estatísticas das tarefas
    */
-  getEstatisticasTarefas(): Observable<{
-    total: number;
-    pendentes: number;
-    emAndamento: number;
-    concluidas: number;
-    canceladas: number;
-    vencidas: number;
-    porRelevancia: { [key: string]: number };
-  }> {
-    return this.http.get<{
-      total: number;
-      pendentes: number;
-      emAndamento: number;
-      concluidas: number;
-      canceladas: number;
-      vencidas: number;
-      porRelevancia: { [key: string]: number };
-    }>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/estatisticas`),
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Duplicar tarefa
-   */
-  duplicarTarefa(id: number): Observable<TarefaResposta> {
-    return this.http.post<TarefaResposta>(
-      buildApiUrl(`${API_CONFIG.ENDPOINTS.TAREFAS}/${id}/duplicar`),
-      {},
-      { headers: getAuthHeaders() }
-    );
-  }
-
-  /**
-   * Marcar tarefa como concluída
-   */
-  marcarConcluida(id: number): Observable<TarefaResposta> {
-    return this.alterarEstado(id, EstadoTarefa.CONCLUIDA);
-  }
-
-  /**
-   * Marcar tarefa como em andamento
-   */
-  marcarEmAndamento(id: number): Observable<TarefaResposta> {
-    return this.alterarEstado(id, EstadoTarefa.EM_ANDAMENTO);
-  }
-
-  /**
-   * Cancelar tarefa
-   */
-  cancelarTarefa(id: number): Observable<TarefaResposta> {
-    return this.alterarEstado(id, EstadoTarefa.CANCELADA);
-  }
+  // Métodos extra removidos por não existirem no backend atual
 }

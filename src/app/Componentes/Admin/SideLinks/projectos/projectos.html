@@ -1,7 +1,7 @@
 <div class="font-poppins">
   <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-2">Gerenciar Equipes</h1>
-    <p class="text-gray-600">Visualize, pesquise e gerencie as equipes</p>
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">Gerenciar Projetos</h1>
+    <p class="text-gray-600">Visualize, pesquise e gerencie os projetos</p>
   </div>
 
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
@@ -13,42 +13,47 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
-          <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Pesquisar equipes..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" />
+          <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Pesquisar projetos..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" />
         </div>
       </div>
+      <!--
       <div class="flex space-x-3">
         <button (click)="toggleFilters()" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">Filtros</button>
-        <button (click)="openAddModal()" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">Adicionar Equipe</button>
+        <button (click)="openAddModal()" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">Adicionar Projeto</button>
       </div>
+      -->
     </div>
   </div>
 
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-medium text-gray-900">Lista de Equipes</h3>
-        <div class="flex items-center space-x-2 text-sm text-gray-500">
-          <span>{{ filteredEquipes.length }} de {{ equipes.length }} equipes</span>
-        </div>
+        <h3 class="text-lg font-medium text-gray-900">Lista de Projetos</h3>
+        <div class="flex items-center space-x-2 text-sm text-gray-500"><span>{{ filteredProjectos.length }} de {{ projectos.length }} projetos</span></div>
       </div>
     </div>
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descrição</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Projeto</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Equipe</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Início</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fim</th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let e of getCurrentPageEquipes()" class="hover:bg-gray-50 transition-colors duration-200">
+          <tr *ngFor="let p of getCurrentPageProjectos()" class="hover:bg-gray-50 transition-colors duration-200">
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">{{ e.nome }}</div>
+              <div class="text-sm font-medium text-gray-900">{{ p.nome }}</div>
+              <div class="text-sm text-gray-500">{{ p.descricao }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-500">{{ e.descricao || '-' }}</div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ p.equipe?.nome || '-' }}</span>
             </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ p.dataInicio | date:'dd/MM/yyyy' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ p.dataFim ? (p.dataFim | date:'dd/MM/yyyy') : '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <div class="flex items-center justify-end space-x-2">
                 <button class="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50 transition-colors duration-200">Editar</button>
@@ -65,7 +70,7 @@
           <p class="text-sm text-gray-700">
             Mostrando <span class="font-medium">{{ startIndex + 1 }}</span> a
             <span class="font-medium">{{ endIndex }}</span> de
-            <span class="font-medium">{{ filteredEquipes.length }}</span> resultados
+            <span class="font-medium">{{ filteredProjectos.length }}</span> resultados
           </p>
         </div>
         <div>
@@ -79,32 +84,49 @@
     </div>
   </div>
 
-  <!-- Modal Nova Equipe -->
+  <!--
+  Modal Novo Projeto
   <div *ngIf="isAddOpen" class="fixed inset-0 z-50 flex items-center justify-center">
     <div class="fixed inset-0 bg-black bg-opacity-40" (click)="closeAddModal()"></div>
-    <div class="relative bg-white rounded-xl shadow-xl w-full max-w-xl mx-4 p-6">
+    <div class="relative bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4 p-6">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xl font-semibold text-gray-900">Adicionar Equipe</h3>
+        <h3 class="text-xl font-semibold text-gray-900">Adicionar Projeto</h3>
         <button (click)="closeAddModal()" class="text-gray-400 hover:text-gray-600">
           <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
-      <div class="grid grid-cols-1 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-          <input [(ngModel)]="newEquipe.nome" type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nome da equipe" />
+          <input [(ngModel)]="newProjecto.nome" type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nome do projeto" />
         </div>
         <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Equipe</label>
+          <select [(ngModel)]="newProjecto.equipeId" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option [ngValue]="undefined" disabled>Selecione...</option>
+            <option *ngFor="let e of equipes" [ngValue]="e.id">{{ e.nome }}</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
           <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-          <textarea [(ngModel)]="newEquipe.descricao" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Descrição (opcional)"></textarea>
+          <textarea [(ngModel)]="newProjecto.descricao" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Descrição do projeto"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Data de Início</label>
+          <input [(ngModel)]="newProjecto.dataInicio" type="date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Data de Fim</label>
+          <input [(ngModel)]="newProjecto.dataFim" type="date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
       </div>
       <div class="mt-6 flex items-center justify-end space-x-3">
         <button (click)="closeAddModal()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Cancelar</button>
-        <button (click)="saveEquipe()" [disabled]="isSaving" class="px-4 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50">{{ isSaving ? 'Salvando...' : 'Salvar' }}</button>
+        <button (click)="saveProjecto()" [disabled]="isSaving" class="px-4 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50">{{ isSaving ? 'Salvando...' : 'Salvar' }}</button>
       </div>
     </div>
   </div>
+    -->
 </div>
