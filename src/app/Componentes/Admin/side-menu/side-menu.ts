@@ -6,7 +6,7 @@ import { ThemeService } from '../../../../Servicos/theme.service';
 @Component({
   selector: 'app-side-menu',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './side-menu.html',
   styleUrl: './side-menu.css'
 })
