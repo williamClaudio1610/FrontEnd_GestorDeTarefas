@@ -1,18 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-
-// Importar modelos do sistema
-import { Usuario, Cargo, Equipe, EstadoUsuario, NivelHierarquico, Role, CriarUsuario } from '../../../../../Modelos';
-import { UsuarioService, CargoService, EquipeService, NotificacaoService } from '../../../../../Servicos';
+import { Router, RouterModule } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { UsuarioService } from '../../../../../Servicos/usuario.service';
+import { CargoService } from '../../../../../Servicos/cargo.service';
+import { EquipeService } from '../../../../../Servicos/equipe.service';
+import { NotificacaoService } from '../../../../../Servicos/notificacao.service';
+import { Usuario, CriarUsuario } from '../../../../../Modelos/Usuario';
+import { Cargo } from '../../../../../Modelos/Cargo';
+import { Equipe } from '../../../../../Modelos/Equipe';
+import { EstadoUsuario, NivelHierarquico, Role } from '../../../../../Modelos';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, ToastModule],
   templateUrl: './usuarios.html',
-  styleUrl: './usuarios.css'
+  styleUrl: './usuarios.css',
+  providers: [MessageService]
 })
 export class UsuariosComponent implements OnInit {
   // Propriedades de busca e filtros
@@ -79,7 +86,8 @@ export class UsuariosComponent implements OnInit {
     private usuarioService: UsuarioService,
     private cargoService: CargoService,
     private equipeService: EquipeService,
-    private notificacao: NotificacaoService
+    private notificacao: NotificacaoService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -89,15 +97,19 @@ export class UsuariosComponent implements OnInit {
     this.calculateStatistics();
   }
 
-  // Carregar usuários da API
+  // Carregar usuários
   loadUsers() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Carregando',
+      detail: 'Carregando lista de usuários...',
+      life: 2000
+    });
+
     this.usuarioService.getUsuarios().subscribe({
-      next: (usuarios) => {
-        const list: any[] = Array.isArray(usuarios)
-          ? (usuarios as any[])
-          : ((usuarios as any)?.data ?? []);
-        // Converter datas se vierem como string
-        this.users = (list as unknown as Usuario[]).map(u => ({
+      next: (response: any) => {
+        const usuarios = response.data;
+        this.users = (usuarios as Usuario[]).map(u => ({
           ...u,
           createdAt: u.createdAt ? new Date(u.createdAt as unknown as string) : undefined,
           updatedAt: u.updatedAt ? new Date(u.updatedAt as unknown as string) : undefined
@@ -106,36 +118,75 @@ export class UsuariosComponent implements OnInit {
         this.totalUsers = this.users.length;
         this.calculateStatistics();
         this.calculatePagination();
+        
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: `${this.users.length} usuários carregados com sucesso`,
+          life: 3000
+        });
       },
       error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Falha ao carregar usuários',
+          life: 5000
+        });
         this.notificacao.erroGenerico('Falha ao carregar usuários.');
       }
     });
   }
 
-  // Carregar cargos da API
+  // Carregar cargos
   loadCargos() {
     this.cargoService.getCargos().subscribe({
-      next: (cargos) => {
-        const list: any[] = Array.isArray(cargos)
-          ? (cargos as any[])
-          : ((cargos as any)?.data ?? []);
-        this.cargos = list as any;
+      next: (response: any) => {
+        const cargos = response.data;
+        this.cargos = cargos as Cargo[];
+        
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: `${this.cargos.length} cargos carregados`,
+          life: 2000
+        });
       },
-      error: () => this.notificacao.erroGenerico('Falha ao carregar cargos.')
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Falha ao carregar cargos',
+          life: 5000
+        });
+        this.notificacao.erroGenerico('Falha ao carregar cargos.');
+      }
     });
   }
 
-  // Carregar equipes da API
+  // Carregar equipes
   loadEquipes() {
     this.equipeService.getEquipes().subscribe({
-      next: (equipes) => {
-        const list: any[] = Array.isArray(equipes)
-          ? (equipes as any[])
-          : ((equipes as any)?.data ?? []);
-        this.equipes = list as unknown as Equipe[];
+      next: (response: any) => {
+        const equipes = response.data;
+        this.equipes = equipes as Equipe[];
+        
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: `${this.equipes.length} equipes carregadas`,
+          life: 2000
+        });
       },
-      error: () => this.notificacao.erroGenerico('Falha ao carregar equipes.')
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Falha ao carregar equipes',
+          life: 5000
+        });
+        this.notificacao.erroGenerico('Falha ao carregar equipes.');
+      }
     });
   }
 
@@ -223,22 +274,45 @@ export class UsuariosComponent implements OnInit {
 
   // Salvar novo usuário
   saveNewUser() {
-    if (!this.newUser.nome || !this.newUser.email || !this.newUser.senha || !this.newUser.cargoId) {
-      this.notificacao.erroValidacao('Preencha nome, email, senha e cargo.');
+    if (!this.newUser.nome.trim()) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Validação',
+        detail: 'Nome do usuário é obrigatório',
+        life: 4000
+      });
       return;
     }
 
     this.isSavingUser = true;
+    
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Salvando',
+      detail: 'Criando novo usuário...',
+      life: 2000
+    });
+
     this.usuarioService.criarUsuario(this.newUser).subscribe({
       next: () => {
-        this.isSavingUser = false;
-        this.isAddUserOpen = false;
-        this.notificacao.sucesso('Usuário Criado', 'O usuário foi criado com sucesso.');
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Usuário criado com sucesso!',
+          life: 4000
+        });
+        this.closeAddUserModal();
         this.loadUsers();
       },
       error: () => {
-        this.isSavingUser = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Falha ao criar usuário',
+          life: 5000
+        });
         this.notificacao.erroGenerico('Não foi possível criar o usuário.');
+        this.isSavingUser = false;
       }
     });
   }

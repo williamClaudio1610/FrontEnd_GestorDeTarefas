@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Cargo, CriarCargo, AtualizarCargo } from '../../../../../Modelos';
-import { CargoService, NotificacaoService } from '../../../../../Servicos';
+import { RouterModule } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { CargoService } from '../../../../../Servicos/cargo.service';
+import { NotificacaoService } from '../../../../../Servicos/notificacao.service';
+import { Cargo, CriarCargo } from '../../../../../Modelos/Cargo';
 
 @Component({
   selector: 'app-cargos',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, ToastModule],
   templateUrl: './cargos.html',
-  styleUrl: './cargos.css'
+  styleUrl: './cargos.css',
+  providers: [MessageService]
 })
 export class CargosComponent implements OnInit {
   searchTerm = '';
@@ -18,25 +23,60 @@ export class CargosComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 10;
   totalPages = 1;
+  totalCargos = 0;
 
   // Modal
   isAddOpen = false;
   isSaving = false;
   newCargo: CriarCargo = { nome: '', descricao: '' };
 
-  constructor(private cargoService: CargoService, private notificacao: NotificacaoService) {}
+  constructor(
+    private cargoService: CargoService,
+    private notificacao: NotificacaoService,
+    private messageService: MessageService
+  ) {}
 
-  ngOnInit(): void { this.loadCargos(); }
+  ngOnInit(): void {
+    this.loadCargos();
+  }
 
+  // Carregar cargos
   loadCargos() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Carregando',
+      detail: 'Carregando lista de cargos...',
+      life: 2000
+    });
+
     this.cargoService.getCargos().subscribe({
-      next: (resp) => {
-        const list: any[] = Array.isArray(resp) ? resp as any[] : ((resp as any)?.data ?? []);
-        this.cargos = list as Cargo[];
+      next: (response: any) => {
+        const cargos = response.data;
+        this.cargos = (cargos as Cargo[]).map(c => ({
+          ...c,
+          createdAt: c.createdAt ? new Date(c.createdAt as unknown as string) : new Date(),
+          updatedAt: c.updatedAt ? new Date(c.updatedAt as unknown as string) : new Date()
+        }));
         this.filteredCargos = [...this.cargos];
+        this.totalCargos = this.cargos.length;
         this.calculatePagination();
+        
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: `${this.cargos.length} cargos carregados com sucesso`,
+          life: 3000
+        });
       },
-      error: () => this.notificacao.erroGenerico('Falha ao carregar cargos.')
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Falha ao carregar cargos',
+          life: 5000
+        });
+        this.notificacao.erroGenerico('Falha ao carregar cargos.');
+      }
     });
   }
 
@@ -52,12 +92,53 @@ export class CargosComponent implements OnInit {
   openAddModal() { this.newCargo = { nome: '', descricao: '' }; this.isAddOpen = true; }
   closeAddModal() { this.isAddOpen = false; }
 
+  // Salvar cargo
   saveCargo() {
-    if (!this.newCargo.nome) { this.notificacao.erroValidacao('Informe o nome do cargo.'); return; }
+    if (!this.newCargo.nome?.trim()) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Validação',
+        detail: 'Nome do cargo é obrigatório',
+        life: 4000
+      });
+      return;
+    }
+
     this.isSaving = true;
-    this.cargoService.criarCargo(this.newCargo).subscribe({
-      next: () => { this.isSaving = false; this.isAddOpen = false; this.notificacao.sucesso('Cargo Criado', 'Cargo criado com sucesso.'); this.loadCargos(); },
-      error: () => { this.isSaving = false; this.notificacao.erroGenerico('Não foi possível criar o cargo.'); }
+    
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Salvando',
+      detail: 'Criando novo cargo...',
+      life: 2000
+    });
+
+    const cargoData: CriarCargo = {
+      nome: this.newCargo.nome,
+      descricao: this.newCargo.descricao || ''
+    };
+
+    this.cargoService.criarCargo(cargoData).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Cargo criado com sucesso!',
+          life: 4000
+        });
+        this.closeAddModal();
+        this.loadCargos();
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Falha ao criar cargo',
+          life: 5000
+        });
+        this.notificacao.erroGenerico('Falha ao criar cargo.');
+        this.isSaving = false;
+      }
     });
   }
 

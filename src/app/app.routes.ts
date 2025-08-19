@@ -5,8 +5,8 @@ import { AdminLayoutComponent } from './Componentes/Admin/admin-layout/admin-lay
 import { UsuariosComponent } from './Componentes/Admin/SideLinks/usuarios/usuarios';
 import { DashboardComponent } from './Componentes/Admin/dashboard/dashboard';
 import { PaginaInicial } from './Componentes/HomePage/pagina-inicial/pagina-inicial';
-import { Equipes } from './Componentes/Admin/SideLinks/equipes/equipes';
-import { Projectos } from './Componentes/Admin/SideLinks/projectos/projectos';
+import { EquipesComponent } from './Componentes/Admin/SideLinks/equipes/equipes';
+import { ProjectosComponent } from './Componentes/Admin/SideLinks/projectos/projectos';
 import { CargosComponent } from './Componentes/Admin/SideLinks/cargos/cargos';
 import { Footer } from './Componentes/HomePage/footer/footer';
 import { Header } from './Componentes/HomePage/header/header';
@@ -25,9 +25,9 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'usuarios', component: UsuariosComponent },
-      { path: 'projectos', component: Projectos },
+      { path: 'projectos', component: ProjectosComponent },
       { path: 'tarefas', component: DashboardComponent }, // Placeholder para tarefas
-      { path: 'equipes', component: Equipes },
+      { path: 'equipes', component: EquipesComponent },
       { path: 'cargos', component: CargosComponent },
       { path: 'reports', component: DashboardComponent }, // Placeholder para relatórios
       { path: 'settings', component: DashboardComponent }, // Placeholder para configurações

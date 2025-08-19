@@ -1,4 +1,11 @@
-<div class="font-poppins">
+<div class="container mx-auto px-4 py-6">
+  <!-- Toast para notificações -->
+  <p-toast position="top-right" 
+            [baseZIndex]="1000"
+            [showTransformOptions]="'translateY'"
+            [showTransitionOptions]="'300ms ease-out'"
+            [hideTransitionOptions]="'250ms ease-in'"></p-toast>
+
   <!-- Header da página -->
   <div class="mb-8">
     <h1 class="text-3xl font-bold text-gray-800 mb-2">Gerenciar Usuários</h1>
