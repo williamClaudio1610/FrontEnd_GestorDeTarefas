@@ -1,0 +1,218 @@
+<div class="projects-container">
+  <!-- Toast para notificações -->
+  <p-toast position="top-right"></p-toast>
+  
+  <div class="projects-header">
+    <h1 class="text-3xl font-bold mb-2">Meus Projetos</h1>
+    <p class="text-lg">Visualize e gerencie os projetos em que você está envolvido</p>
+  </div>
+
+  <!-- Botão de criar projeto (apenas para usuários autorizados) -->
+  <button 
+    *ngIf="canCreateProject"
+    (click)="openCreateDialog()"
+    class="create-project-btn">
+    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+    </svg>
+    Criar Novo Projeto
+  </button>
+
+  <!-- Informação sobre permissões -->
+  <div *ngIf="!canCreateProject" class="bg-yellow-900 border border-yellow-700 rounded-lg p-4 mb-6">
+    <div class="flex items-center gap-3">
+      <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+      </svg>
+      <div>
+        <h3 class="text-yellow-400 font-semibold">Permissão Limitada</h3>
+        <p class="text-yellow-200 text-sm">
+          Apenas usuários com nível hierárquico de Líder, Gerente ou Diretor podem criar projetos. 
+          Seu nível atual: <strong>{{ userNivelHierarquico || 'Não definido' }}</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Carregando projetos...</p>
+  </div>
+
+  <!-- Erro -->
+  <div *ngIf="error && !loading" class="error-state">
+    <div class="error-icon">⚠️</div>
+    <h3 class="text-xl font-semibold mb-2">Erro ao carregar projetos</h3>
+    <p>Não foi possível carregar os projetos. Tente novamente.</p>
+    <button 
+      (click)="loadProjects()"
+      class="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+      Tentar Novamente
+    </button>
+  </div>
+
+  <!-- Lista de projetos -->
+  <div *ngIf="!loading && !error" class="projects-grid">
+    <!-- Projetos existentes -->
+    <div 
+      *ngFor="let projeto of projetos" 
+      class="project-card relative">
+      
+      <!-- Status do projeto -->
+      <div [class]="'project-status ' + getEstadoClass(projeto.estado)">
+        {{ getEstadoLabel(projeto.estado) }}
+      </div>
+
+      <div class="project-header">
+        <div class="project-title">{{ projeto.nome }}</div>
+      </div>
+
+      <div class="project-description">{{ projeto.descricao }}</div>
+
+      <div class="project-meta">
+        <div class="meta-item">
+          <span class="meta-label">Equipe:</span>
+          <span class="meta-value">{{ projeto.equipeNome || 'N/A' }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">ID:</span>
+          <span class="meta-value">#{{ projeto.id }}</span>
+        </div>
+      </div>
+
+      <div class="project-team">
+        {{ projeto.equipeNome || 'Equipe não definida' }}
+      </div>
+
+      <div class="project-dates">
+        <div class="date-item">
+          <div class="date-label">Início</div>
+          <div class="date-value">
+            {{ projeto.dataInicio ? (projeto.dataInicio | date:'dd/MM/yyyy') : 'N/A' }}
+          </div>
+        </div>
+        <div class="date-item">
+          <div class="date-label">Fim</div>
+          <div class="date-value">
+            {{ projeto.dataFim ? (projeto.dataFim | date:'dd/MM/yyyy') : 'N/A' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensagem quando não há projetos -->
+    <div *ngIf="projetos.length === 0" class="empty-state col-span-full">
+      <div class="empty-icon">📋</div>
+      <h3 class="text-xl font-semibold mb-2">Nenhum projeto encontrado</h3>
+      <p>Você ainda não está envolvido em nenhum projeto.</p>
+    </div>
+  </div>
+
+  <!-- Dialog de criação de projeto -->
+  <p-dialog 
+    [(visible)]="showCreateDialog" 
+    header="Criar Novo Projeto" 
+    [modal]="true" 
+    [style]="{width: '600px'}"
+    [draggable]="false" 
+    [resizable]="false">
+    
+    <form [formGroup]="createForm" (ngSubmit)="createProject()" class="space-y-4">
+      <!-- Nome do projeto -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Nome do Projeto *
+        </label>
+        <input 
+          type="text" 
+          formControlName="nome"
+          [class]="'w-full px-3 py-2 border rounded-md ' + getFieldClasses('nome')"
+          placeholder="Digite o nome do projeto">
+        <small *ngIf="hasFieldError('nome')" class="text-red-500 text-xs">
+          {{ getFieldError('nome') }}
+        </small>
+      </div>
+
+      <!-- Descrição -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Descrição *
+        </label>
+        <textarea 
+          formControlName="descricao"
+          [class]="'w-full px-3 py-2 border rounded-md ' + getFieldClasses('descricao')"
+          rows="3"
+          placeholder="Descreva o projeto"></textarea>
+        <small *ngIf="hasFieldError('descricao')" class="text-red-500 text-xs">
+          {{ getFieldError('descricao') }}
+        </small>
+      </div>
+
+      <!-- Data de início -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Data de Início *
+        </label>
+        <input 
+          type="date" 
+          formControlName="dataInicio"
+          [class]="'w-full px-3 py-2 border rounded-md ' + getFieldClasses('dataInicio')">
+        <small *ngIf="hasFieldError('dataInicio')" class="text-red-500 text-xs">
+          {{ getFieldError('dataInicio') }}
+        </small>
+      </div>
+
+      <!-- Data de fim -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Data de Fim *
+        </label>
+        <input 
+          type="date" 
+          formControlName="dataFim"
+          [class]="'w-full px-3 py-2 border rounded-md ' + getFieldClasses('dataFim')">
+        <small *ngIf="hasFieldError('dataFim')" class="text-red-500 text-xs">
+          {{ getFieldError('dataFim') }}
+        </small>
+      </div>
+
+      <!-- Equipe -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Equipe *
+        </label>
+        <select 
+          formControlName="equipeId"
+          [class]="'w-full px-3 py-2 border rounded-md ' + getFieldClasses('equipeId')">
+          <option value="">Selecione uma equipe</option>
+          <option *ngFor="let equipe of equipes" [value]="equipe.id">
+            {{ equipe.nome }}
+          </option>
+        </select>
+        <small *ngIf="hasFieldError('equipeId')" class="text-red-500 text-xs">
+          {{ getFieldError('equipeId') }}
+        </small>
+      </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <button 
+          type="button"
+          (click)="closeCreateDialog()"
+          class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+          Cancelar
+        </button>
+        <button 
+          type="button"
+          (click)="createProject()"
+          [disabled]="createForm.invalid || isCreating"
+          class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
+          <span *ngIf="!isCreating">Criar Projeto</span>
+          <span *ngIf="isCreating">Criando...</span>
+        </button>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>

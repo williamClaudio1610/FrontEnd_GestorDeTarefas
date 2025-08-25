@@ -1,0 +1,14 @@
+<div class="user-layout">
+  <!-- Sidebar -->
+  <app-user-sidebar 
+    (collapsedChange)="onSidebarCollapsedChange($event)">
+  </app-user-sidebar>
+
+  <!-- Conteúdo principal -->
+  <main class="main-content" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <div class="content-wrapper">
+      <!-- Aqui será renderizado o conteúdo das rotas -->
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

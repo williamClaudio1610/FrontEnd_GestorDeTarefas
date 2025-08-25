@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
 
 // Services
 import { AuthService } from '../../../Servicos/auth.service';
+import { Role } from '../../../Modelos/Usuario';
 
 @Component({
   selector: 'app-login',
@@ -61,14 +62,17 @@ export class Login {
 
       this.authService.login({ email, senha }).subscribe({
         next: (response: any) => {
+          console.log('Resposta do login:', response);
+          
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso!',
             detail: 'Login realizado com sucesso! Redirecionando...'
           });
 
+          // Verificar o role do usuário e redirecionar adequadamente
           setTimeout(() => {
-            this.router.navigate(['/dashboard']);
+            this.redirectBasedOnRole(response);
           }, 1500);
         },
         error: (error: any) => {
@@ -109,6 +113,56 @@ export class Login {
         detail: 'Por favor, preencha todos os campos corretamente.',
         life: 3000
       });
+    }
+  }
+
+  /**
+   * Redireciona o usuário baseado no seu role
+   */
+  private redirectBasedOnRole(response: any): void {
+    console.log('Processando redirecionamento com resposta:', response);
+    
+    // Extrair usuário da estrutura real: response.data.user
+    let user = null;
+    let role = null;
+    
+    if (response?.data?.user) {
+      user = response.data.user;
+      role = response.data.user.role;
+    } else if (response?.user) {
+      user = response.user;
+      role = response.user.role;
+    } else if (response?.usuario) {
+      user = response.usuario;
+      role = response.usuario.role;
+    }
+    
+    console.log('Usuário extraído:', user);
+    console.log('Role extraído:', role);
+    
+    if (!user || !role) {
+      console.error('Usuário ou role não encontrado na resposta:', response);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro no Login',
+        detail: 'Resposta do servidor inválida. Tente novamente.',
+        life: 5000
+      });
+      return;
+    }
+
+    const roleLower = role.toLowerCase();
+    
+    if (roleLower === Role.ADMIN || roleLower === 'admin') {
+      console.log('Usuário é ADMIN, redirecionando para área administrativa');
+      this.router.navigate(['/admin/dashboard']);
+    } else if (roleLower === Role.USER || roleLower === 'user') {
+      console.log('Usuário é USER, redirecionando para área do usuário');
+      this.router.navigate(['/user/dashboard']);
+    } else {
+      console.warn('Role desconhecido:', roleLower);
+      // Fallback para área do usuário
+      this.router.navigate(['/user/dashboard']);
     }
   }
 
@@ -156,24 +210,4 @@ export class Login {
     }
     return '';
   }
-
-  // Método de teste para verificar se os toasts estão funcionando
-  /*
-  testToast() {
-    console.log('Testando toast...');
-    console.log('MessageService:', this.messageService);
-    
-    try {
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Teste',
-        detail: 'Este é um teste para verificar se os toasts estão funcionando.',
-        life: 3000
-      });
-      console.log('Toast adicionado com sucesso');
-    } catch (error) {
-      console.error('Erro ao adicionar toast:', error);
-    }
-  }
-    */
 }

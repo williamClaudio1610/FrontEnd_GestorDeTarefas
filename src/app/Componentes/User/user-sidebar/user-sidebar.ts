@@ -2,15 +2,16 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ThemeService } from '../../../../Servicos/theme.service';
+import { AuthService } from '../../../../Servicos/auth.service';
 
 @Component({
-  selector: 'app-side-menu',
+  selector: 'app-user-sidebar',
   standalone: true,
-  imports: [RouterModule, CommonModule],
-  templateUrl: './side-menu.html',
-  styleUrl: './side-menu.css'
+  imports: [CommonModule, RouterModule],
+  templateUrl: './user-sidebar.html',
+  styleUrl: './user-sidebar.css'
 })
-export class SideMenuComponent implements OnInit {
+export class UserSidebarComponent implements OnInit {
   // Estado do menu
   isCollapsed = false;
   activeMenuItem = 'dashboard';
@@ -22,69 +23,95 @@ export class SideMenuComponent implements OnInit {
 
   // Dados do usuário (mock - substituir por dados reais)
   currentUser = {
-    name: 'Admin User',
-    email: 'admin@gestor.com',
-    avatar: 'A',
-    role: 'ADMIN'
+    name: 'Usuário',
+    email: 'usuario@gestor.com',
+    avatar: 'U',
+    role: 'USER'
   };
 
-  // Itens do menu
+  // Itens do menu principal para usuários
   menuItems = [
     {
       id: 'dashboard',
       label: 'Dashboard',
       icon: 'dashboard',
-      route: '/admin/dashboard',
+      route: '/user/dashboard',
       color: 'blue'
     },
     {
-      id: 'cargos',
-      label: 'Cargos',
-      icon: 'briefcase',
-      route: '/admin/cargos',
-      color: 'orange'
-    },
-    {
-      id: 'users',
-      label: 'Usuários',
-      icon: 'users',
-      route: '/admin/usuarios',
-      color: 'green',
-      hasNotification: true
-    },
-    {
       id: 'projectos',
-      label: 'Projetos',
+      label: 'Meus Projetos',
       icon: 'projects',
-      route: '/admin/projectos',
+      route: '/user/projectos',
       color: 'purple'
     },
     {
+      id: 'tarefas',
+      label: 'Minhas Tarefas',
+      icon: 'tasks',
+      route: '/user/tarefas',
+      color: 'orange',
+      hasNotification: true
+    },
+    {
       id: 'equipes',
-      label: 'Equipes',
+      label: 'Minhas Equipes',
       icon: 'teams',
-      route: '/admin/equipes',
+      route: '/user/equipes',
       color: 'indigo'
+    },
+    {
+      id: 'perfil',
+      label: 'Meu Perfil',
+      icon: 'profile',
+      route: '/user/perfil',
+      color: 'green'
     }
   ];
 
   // Itens secundários
   secondaryMenuItems = [
     {
-      id: 'configs',
-      label: 'Configurações',
-      icon: 'settings',
-      route: '/admin/configs',
+      id: 'notificacoes',
+      label: 'Notificações',
+      icon: 'notifications',
+      route: '/user/notificacoes',
+      color: 'yellow'
+    },
+    {
+      id: 'ajuda',
+      label: 'Ajuda',
+      icon: 'help',
+      route: '/user/ajuda',
       color: 'gray'
     }
   ];
 
-  constructor(private router: Router, private theme: ThemeService) {}
+  constructor(
+    private router: Router, 
+    private theme: ThemeService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.theme.init();
     this.isDarkTheme = this.theme.isDark();
     this.collapsedChange.emit(this.isCollapsed);
+    
+    // Obter dados do usuário logado
+    this.loadCurrentUser();
+  }
+
+  loadCurrentUser(): void {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.currentUser = {
+        name: user.nome,
+        email: user.email,
+        avatar: user.nome.charAt(0).toUpperCase(),
+        role: user.role
+      };
+    }
   }
 
   // Alternar estado do menu (colapsar/expandir)
@@ -116,8 +143,7 @@ export class SideMenuComponent implements OnInit {
 
   // Fazer logout
   logout() {
-    // Implementar lógica de logout
-    console.log('Logout realizado');
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 

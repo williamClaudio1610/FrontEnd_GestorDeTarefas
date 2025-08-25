@@ -1,1 +1,115 @@
-<p>configs works!</p>
+<div class="configs-container">
+  <div class="configs-header">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Configurações do Sistema</h1>
+    <p class="text-gray-600">Gerencie as configurações globais e preferências do sistema</p>
+  </div>
+
+  <div class="configs-grid">
+    <!-- Configurações Gerais -->
+    <div class="config-section">
+      <h2 class="section-title">Configurações Gerais</h2>
+      <div class="config-card">
+        <div class="config-item">
+          <label class="config-label">Nome da Empresa</label>
+          <input type="text" value="Gestor Escolar" class="config-input" readonly>
+        </div>
+        <div class="config-item">
+          <label class="config-label">Versão do Sistema</label>
+          <input type="text" value="1.0.0" class="config-input" readonly>
+        </div>
+        <div class="config-item">
+          <label class="config-label">Fuso Horário</label>
+          <select class="config-select">
+            <option value="UTC-3">UTC-3 (Brasil)</option>
+            <option value="UTC-1">UTC-1 (Angola)</option>
+            <option value="UTC+0">UTC+0 (GMT)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configurações de Notificações -->
+    <div class="config-section">
+      <h2 class="section-title">Notificações</h2>
+      <div class="config-card">
+        <div class="config-item">
+          <label class="config-label">Notificações por Email</label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="email-notifications" checked>
+            <label for="email-notifications"></label>
+          </div>
+        </div>
+        <div class="config-item">
+          <label class="config-label">Notificações Push</label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="push-notifications">
+            <label for="push-notifications"></label>
+          </div>
+        </div>
+        <div class="config-item">
+          <label class="config-label">Frequência de Relatórios</label>
+          <select class="config-select">
+            <option value="daily">Diário</option>
+            <option value="weekly" selected>Semanal</option>
+            <option value="monthly">Mensal</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configurações de Segurança -->
+    <div class="config-section">
+      <h2 class="section-title">Segurança</h2>
+      <div class="config-card">
+        <div class="config-item">
+          <label class="config-label">Autenticação de Dois Fatores</label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="2fa">
+            <label for="2fa"></label>
+          </div>
+        </div>
+        <div class="config-item">
+          <label class="config-label">Sessão Expirada (minutos)</label>
+          <input type="number" value="30" class="config-input" min="15" max="120">
+        </div>
+        <div class="config-item">
+          <label class="config-label">Tentativas de Login</label>
+          <input type="number" value="3" class="config-input" min="3" max="10">
+        </div>
+      </div>
+    </div>
+
+    <!-- Configurações de Backup -->
+    <div class="config-section">
+      <h2 class="section-title">Backup e Manutenção</h2>
+      <div class="config-card">
+        <div class="config-item">
+          <label class="config-label">Backup Automático</label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="auto-backup" checked>
+            <label for="auto-backup"></label>
+          </div>
+        </div>
+        <div class="config-item">
+          <label class="config-label">Frequência de Backup</label>
+          <select class="config-select">
+            <option value="daily">Diário</option>
+            <option value="weekly" selected>Semanal</option>
+            <option value="monthly">Mensal</option>
+          </select>
+        </div>
+        <div class="config-item">
+          <label class="config-label">Retenção de Backups (dias)</label>
+          <input type="number" value="30" class="config-input" min="7" max="365">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botões de Ação -->
+  <div class="configs-actions">
+    <button class="btn-primary">Salvar Configurações</button>
+    <button class="btn-secondary">Restaurar Padrões</button>
+    <button class="btn-danger">Limpar Cache</button>
+  </div>
+</div>

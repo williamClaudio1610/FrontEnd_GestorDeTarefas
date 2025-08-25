@@ -1,0 +1,84 @@
+<div class="equipes-container">
+  <div class="equipes-header">
+    <h1 class="equipes-title">Minhas Equipes</h1>
+    <p class="equipes-subtitle">Equipes em que você está inserido</p>
+    <div class="equipes-stats">
+      <div class="stat-item">
+        <span class="stat-number">{{ equipes.length }}</span>
+        <span class="stat-label">Total de Equipes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Carregando equipes...</p>
+  </div>
+
+  <!-- Erro -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-icon">⚠️</div>
+    <p class="error-message">{{ error }}</p>
+    <button class="retry-button" (click)="carregarEquipes()">Tentar novamente</button>
+  </div>
+
+  <!-- Conteúdo das equipes -->
+  <div *ngIf="!loading && !error" class="equipes-content">
+    <!-- Sem equipes -->
+    <div *ngIf="equipes.length === 0" class="no-equipes">
+      <div class="no-equipes-icon">👥</div>
+      <h3>Nenhuma equipe encontrada</h3>
+      <p>Você ainda não está inserido em nenhuma equipe.</p>
+    </div>
+
+    <!-- Lista de equipes -->
+    <div *ngIf="equipes.length > 0" class="equipes-grid">
+      <div *ngFor="let equipe of equipes" class="equipe-card">
+        <div class="equipe-header">
+          <div class="equipe-icon">
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <div class="equipe-acoes">
+            <button class="acao-button" title="Ver detalhes">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+            <button class="acao-button" title="Ver membros">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="equipe-content">
+          <h3 class="equipe-nome">{{ equipe.nome }}</h3>
+          <p class="equipe-descricao">{{ equipe.descricao || 'Sem descrição' }}</p>
+          
+          <!--
+          <div class="equipe-info">
+            <div class="info-item">
+              <span class="info-label">ID da Equipe:</span>
+              <span class="info-valor">#{{ equipe.id }}</span>
+            </div>
+          </div>
+          -->
+        </div>
+
+        <div class="equipe-footer">
+          <button class="ver-equipe-button">
+            Ver Equipe
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

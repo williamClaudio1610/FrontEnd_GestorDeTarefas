@@ -1,1 +1,71 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard Administrativo</h1>
+    <p class="text-gray-600">Visão geral do sistema e estatísticas importantes</p>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Card de Usuários -->
+    <div class="stat-card bg-blue-50 border-blue-200">
+      <div class="stat-icon bg-blue-500">
+        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Total de Usuários</h3>
+        <p class="stat-value">0</p>
+        <p class="stat-change text-green-600">+0% este mês</p>
+      </div>
+    </div>
+
+    <!-- Card de Equipes -->
+    <div class="stat-card bg-green-50 border-green-200">
+      <div class="stat-icon bg-green-500">
+        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Total de Equipes</h3>
+        <p class="stat-value">0</p>
+        <p class="stat-change text-green-600">+0% este mês</p>
+      </div>
+    </div>
+
+    <!-- Card de Projetos -->
+    <div class="stat-card bg-purple-50 border-purple-200">
+      <div class="stat-icon bg-purple-500">
+        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Projetos Ativos</h3>
+        <p class="stat-value">0</p>
+        <p class="stat-change text-green-600">+0% este mês</p>
+      </div>
+    </div>
+
+    <!-- Card de Tarefas -->
+    <div class="stat-card bg-orange-50 border-orange-200">
+      <div class="stat-icon bg-orange-500">
+        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Tarefas Pendentes</h3>
+        <p class="stat-value">0</p>
+        <p class="stat-change text-red-600">+0% este mês</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-activity mt-8">
+    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Atividade Recente</h2>
+    <div class="activity-list bg-white rounded-lg shadow p-6">
+      <p class="text-gray-500 text-center py-8">Nenhuma atividade recente para exibir</p>
+    </div>
+  </div>
+</div>

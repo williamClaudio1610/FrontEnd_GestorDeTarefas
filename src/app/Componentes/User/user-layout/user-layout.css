@@ -1,0 +1,82 @@
+/* User Layout - Container principal */
+.user-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #1f2937;
+}
+
+/* Conteúdo principal */
+.main-content {
+  flex: 1;
+  margin-left: 240px; /* Largura do sidebar */
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+  background: #1f2937;
+}
+
+/* Quando o sidebar está colapsado */
+.main-content.sidebar-collapsed {
+  margin-left: 72px; /* Largura do sidebar colapsado */
+}
+
+/* Wrapper do conteúdo */
+.content-wrapper {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .main-content.sidebar-collapsed {
+    margin-left: 0;
+  }
+  
+  .content-wrapper {
+    padding: 1rem;
+  }
+}
+
+/* Animações de transição */
+.main-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para o conteúdo das páginas */
+.content-wrapper > * {
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Tema escuro */
+body.theme-dark .user-layout {
+  background: #0f172a;
+}
+
+body.theme-dark .main-content {
+  background: #0f172a;
+}
+
+body.theme-dark .content-wrapper > * {
+  background: #111827;
+  color: #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}

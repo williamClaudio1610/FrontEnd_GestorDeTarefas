@@ -1,38 +1,59 @@
 import { Routes } from '@angular/router';
-import { Login } from './Componentes/login/login';
-import { TesteTailwindComponent } from './Componentes/teste-tailwind/teste-tailwind';
 import { AdminLayoutComponent } from './Componentes/Admin/admin-layout/admin-layout';
+import { UserLayoutComponent } from './Componentes/User/user-layout/user-layout';
+import { UserListaProjectosComponent } from './Componentes/User/user-lista-projectos/user-lista-projectos';
+import { UserListaTarefasComponent } from './Componentes/User/user-lista-tarefas/user-lista-tarefas';
+import { UserDashboardComponent } from './Componentes/User/user-dashboard/user-dashboard';
+import { UserEquipesComponent } from './Componentes/User/user-equipes/user-equipes';
+import { Login } from './Componentes/login/login';
+import { AuthGuard } from '../Servicos/auth.guard';
+
+// Importar componentes do Admin
+import { Dashboard as AdminDashboard } from './Componentes/Admin/SideLinks/dashboard/dashboard';
 import { UsuariosComponent } from './Componentes/Admin/SideLinks/usuarios/usuarios';
-import { DashboardComponent } from './Componentes/Admin/dashboard/dashboard';
-import { PaginaInicial } from './Componentes/HomePage/pagina-inicial/pagina-inicial';
+import { CargosComponent } from './Componentes/Admin/SideLinks/cargos/cargos';
 import { EquipesComponent } from './Componentes/Admin/SideLinks/equipes/equipes';
 import { ProjectosComponent } from './Componentes/Admin/SideLinks/projectos/projectos';
-import { CargosComponent } from './Componentes/Admin/SideLinks/cargos/cargos';
-import { Footer } from './Componentes/HomePage/footer/footer';
-import { Header } from './Componentes/HomePage/header/header';
+import { Configs } from './Componentes/Admin/SideLinks/configs/configs';
 
 export const routes: Routes = [
-  { path: '', component: PaginaInicial },
-  { path: 'home', component: PaginaInicial },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: Login },
-  { path: 'footer', component: Footer },
-  { path: 'header', component: Header },
-  { path: 'teste-tailwind', component: TesteTailwindComponent },
+  
+  // Rotas do Admin (protegidas)
   { 
     path: 'admin', 
     component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    data: { role: 'admin' },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: AdminDashboard },
       { path: 'usuarios', component: UsuariosComponent },
-      { path: 'projectos', component: ProjectosComponent },
-      { path: 'tarefas', component: DashboardComponent }, // Placeholder para tarefas
-      { path: 'equipes', component: EquipesComponent },
       { path: 'cargos', component: CargosComponent },
-      { path: 'reports', component: DashboardComponent }, // Placeholder para relatórios
-      { path: 'settings', component: DashboardComponent }, // Placeholder para configurações
-      { path: 'help', component: DashboardComponent }, // Placeholder para ajuda
+      { path: 'equipes', component: EquipesComponent },
+      { path: 'projectos', component: ProjectosComponent },
+      { path: 'configs', component: Configs },
     ]
   },
-  { path: '**', redirectTo: '' }
+  
+  // Rotas do User (protegidas)
+  { 
+    path: 'user', 
+    component: UserLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: UserDashboardComponent },
+      { path: 'projectos', component: UserListaProjectosComponent },
+      { path: 'tarefas', component: UserListaTarefasComponent },
+      { path: 'equipes', component: UserEquipesComponent },
+      { path: 'perfil', component: UserListaTarefasComponent }, // Placeholder
+      { path: 'notificacoes', component: UserListaTarefasComponent }, // Placeholder
+      { path: 'ajuda', component: UserListaTarefasComponent }, // Placeholder
+    ]
+  },
+  
+  // Rota de fallback
+  { path: '**', redirectTo: '/login' }
 ];

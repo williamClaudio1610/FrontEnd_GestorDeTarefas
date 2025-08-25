@@ -1,0 +1,550 @@
+/* Container principal */
+.tarefas-container {
+  padding: 1.5rem;
+  background: #1f2937;
+  min-height: 100vh;
+  color: #f9fafb;
+}
+
+/* Header */
+.tarefas-header {
+  margin-bottom: 2rem;
+}
+
+.tarefas-header h1 {
+  color: #f9fafb;
+}
+
+.tarefas-header p {
+  color: #d1d5db;
+}
+
+.tarefas-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.tarefas-subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Estatísticas */
+.tarefas-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #60a5fa;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.loading-spinner {
+  border: 4px solid #4b5563;
+  border-top: 4px solid #60a5fa;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Erro */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.75rem;
+}
+
+.error-icon {
+  color: #ef4444;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
+
+.retry-button {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+  background: #b91c1c;
+}
+
+/* Sem tarefas */
+.no-tarefas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: #f9fafb;
+  border-radius: 1rem;
+}
+
+.no-tarefas-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.no-tarefas h3 {
+  font-size: 1.5rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.no-tarefas p {
+  color: #6b7280;
+  font-size: 1.125rem;
+}
+
+/* Seções de tarefas */
+.tarefas-section {
+  background: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f9fafb;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #60a5fa;
+}
+
+/* Lista de tarefas */
+.tarefas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Item de tarefa */
+.tarefa-item {
+  background: #4b5563;
+  border: 1px solid #6b7280;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.tarefa-item:hover {
+  transform: translateX(4px);
+  border-color: #60a5fa;
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
+}
+
+/* Header da tarefa */
+.tarefa-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.tarefa-estado {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.estado-pendente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.estado-em-andamento {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.estado-concluida {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.estado-pausada {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.estado-cancelada {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.estado-padrao {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.tarefa-prioridade {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.prioridade-alta {
+  background: #991b1b;
+  color: #fca5a5;
+}
+
+.prioridade-media {
+  background: #92400e;
+  color: #fbbf24;
+}
+
+.prioridade-baixa {
+  background: #065f46;
+  color: #6ee7b7;
+}
+
+.prioridade-urgente {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.prioridade-padrao {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+/* Conteúdo da tarefa */
+.tarefa-content {
+  padding: 1.5rem;
+}
+
+.tarefa-titulo {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f9fafb;
+  margin-bottom: 0.5rem;
+}
+
+.tarefa-descricao {
+  color: #d1d5db;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.tarefa-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.meta-value {
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.tarefa-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-pendente {
+  background: #92400e;
+  color: #fbbf24;
+}
+
+.status-em-andamento {
+  background: #1e40af;
+  color: #93c5fd;
+}
+
+.status-concluida {
+  background: #065f46;
+  color: #6ee7b7;
+}
+
+.status-cancelada {
+  background: #991b1b;
+  color: #fca5a5;
+}
+
+.status-pausada {
+  background: #7c2d12;
+  color: #fdba74;
+}
+
+.tarefa-projeto {
+  background: #6b7280;
+  color: #f9fafb;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.tarefa-responsavel {
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.tarefa-datas {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #6b7280;
+}
+
+.data-item {
+  text-align: center;
+}
+
+.data-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.data-valor {
+  font-size: 0.875rem;
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+/* Ações da tarefa */
+.tarefa-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.acao-button {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.acao-button:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .tarefas-title {
+    font-size: 2rem;
+  }
+  
+  .tarefas-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .stat-item {
+    padding: 0.75rem 1rem;
+  }
+  
+  .tarefa-content {
+    padding: 1rem;
+  }
+  
+  .tarefa-header,
+  .tarefa-acoes {
+    padding: 0.75rem 1rem;
+  }
+  
+  .tarefa-info {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .tarefa-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .tarefa-datas {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tarefas-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tema escuro */
+body.theme-dark .tarefas-container {
+  background: #0f172a;
+}
+
+body.theme-dark .tarefas-title {
+  color: #e5e7eb;
+}
+
+body.theme-dark .tarefas-subtitle {
+  color: #9ca3af;
+}
+
+body.theme-dark .stat-item {
+  background: #111827;
+  border-color: #1f2937;
+}
+
+body.theme-dark .stat-number {
+  color: #60a5fa;
+}
+
+body.theme-dark .stat-label {
+  color: #9ca3af;
+}
+
+body.theme-dark .tarefa-item {
+  background: #111827;
+  border-color: #1f2937;
+}
+
+body.theme-dark .tarefa-header {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+body.theme-dark .tarefa-titulo {
+  color: #e5e7eb;
+}
+
+body.theme-dark .tarefa-descricao {
+  color: #9ca3af;
+}
+
+body.theme-dark .info-label {
+  color: #9ca3af;
+}
+
+body.theme-dark .info-valor {
+  color: #d1d5db;
+}
+
+body.theme-dark .tarefa-acoes {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+body.theme-dark .section-title {
+  color: #e5e7eb;
+  border-color: #374151;
+}
+
+body.theme-dark .no-tarefas {
+  background: #1f2937;
+}
+
+body.theme-dark .no-tarefas h3 {
+  color: #d1d5db;
+}
+
+body.theme-dark .no-tarefas p {
+  color: #9ca3af;
+}

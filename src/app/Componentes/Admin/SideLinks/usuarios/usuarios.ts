@@ -293,7 +293,7 @@ export class UsuariosComponent implements OnInit {
       life: 2000
     });
 
-    this.usuarioService.criarUsuario(this.newUser).subscribe({
+    this.usuarioService.createUsuario(this.newUser as unknown as Usuario).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',

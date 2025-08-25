@@ -1,7 +1,9 @@
+import { environment } from '../environments/environment';
+
 // Configuração da API
 export const API_CONFIG = {
   // Base URL da API (ajuste conforme seu ambiente)
-  BASE_URL: 'http://localhost:3000/api/v1',
+  BASE_URL: environment.apiUrl,
   
   // Headers padrão
   DEFAULT_HEADERS: {
@@ -29,7 +31,7 @@ export function buildApiUrl(endpoint: string): string {
 
 // Função para obter headers com token de autenticação
 export function getAuthHeaders(): Record<string, string> {
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem(environment.auth.tokenKey);
   return {
     ...API_CONFIG.DEFAULT_HEADERS,
     ...(token && { 'Authorization': `Bearer ${token}` }),
