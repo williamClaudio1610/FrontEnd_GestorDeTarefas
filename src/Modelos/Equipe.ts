@@ -6,6 +6,13 @@ export interface Equipe {
   id: number;
   nome: string;
   descricao: string;
+  liderId: number;
+  lider?: {
+    id: number;
+    nome: string;
+    email: string;
+    nivelHierarquico: string;
+  };
   membros?: Usuario[];
   projectos?: Projecto[];
   createdAt?: Date;
@@ -16,6 +23,7 @@ export interface Equipe {
 export interface CriarEquipe {
   nome: string;
   descricao: string;
+  liderId?: number;
   membrosIds?: number[];
   emailsConvite?: string[];
 }
@@ -24,6 +32,7 @@ export interface CriarEquipe {
 export interface AtualizarEquipe {
   nome?: string;
   descricao?: string;
+  liderId?: number;
   membrosIds?: number[];
 }
 
@@ -42,6 +51,13 @@ export interface EquipeResposta {
   id: number;
   nome: string;
   descricao: string;
+  liderId: number;
+  lider?: {
+    id: number;
+    nome: string;
+    email: string;
+    nivelHierarquico: string;
+  };
   membros?: Usuario[];
   projectos?: Projecto[];
   createdAt?: Date;

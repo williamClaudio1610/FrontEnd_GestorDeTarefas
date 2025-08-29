@@ -123,11 +123,15 @@
   <div class="side-menu-footer">
     <div class="user-profile">
       <div class="user-avatar">
-        <span>{{ currentUser.avatar }}</span>
+        <span>{{ currentUser.avatar || '?' }}</span>
       </div>
       <div *ngIf="!isCollapsed" class="ml-3">
-        <p class="text-sm font-medium text-black">{{ currentUser.name }}</p>
-        <p class="text-xs text-gray-500">{{ currentUser.email }}</p>
+        <p class="text-sm font-medium text-black">{{ currentUser.name || 'Carregando...' }}</p>
+        <p class="text-xs text-gray-500">{{ currentUser.email || 'Carregando...' }}</p>
+        <div *ngIf="currentUser.name" class="flex items-center gap-2 mt-1">
+          <span *ngIf="currentUser.nivelHierarquico" class="text-xs px-2 py-1 rounded-full bg-blue-600 text-white">{{ currentUser.nivelHierarquico | titlecase }}</span>
+          <span *ngIf="currentUser.role" class="text-xs px-2 py-1 rounded-full bg-red-600 text-white">{{ currentUser.role }}</span>
+        </div>
       </div>
     </div>
     

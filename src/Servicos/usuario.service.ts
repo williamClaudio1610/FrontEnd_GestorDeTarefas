@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../Modelos/Usuario';
-import { API_CONFIG } from './api.config';
+import { buildApiUrl, getAuthHeaders, API_CONFIG } from './api.config';
 import { AuthService } from './auth.service';
 
 export interface DadosConsolidadosUsuario {
@@ -24,11 +24,13 @@ export interface DadosConsolidadosUsuario {
     id: number;
     nome: string;
     descricao: string;
-    equipeId: number;
-    equipeNome: string;
-    estado: string;
     dataInicio: string;
     dataFim: string;
+    equipe: {
+      id: number;
+      nome: string;
+      descricao: string;
+    };
   }>;
   minhasTarefas: Array<{
     id: number;
@@ -68,8 +70,6 @@ export interface ApiResponse<T> {
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = API_CONFIG.BASE_URL;
-
   constructor(
     private http: HttpClient,
     private authService: AuthService
@@ -86,31 +86,51 @@ export class UsuarioService {
       usuarioId = currentUser.id;
     }
     
-    return this.http.get<ApiResponse<DadosConsolidadosUsuario>>(`${this.apiUrl}/projectos/usuario/${usuarioId}/dados-consolidados`);
+    return this.http.get<ApiResponse<DadosConsolidadosUsuario>>(
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.PROJECTOS}/usuario/${usuarioId}/dados-consolidados`),
+      { headers: getAuthHeaders() }
+    );
   }
 
   // Buscar usuário por ID
   getUsuarioById(id: number): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.apiUrl}/usuarios/${id}`);
+    return this.http.get<Usuario>(
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/buscar/${id}`),
+      { headers: getAuthHeaders() }
+    );
   }
 
   // Listar todos os usuários
-  getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(`${this.apiUrl}/usuarios`);
+  getUsuarios(): Observable<any> {
+    return this.http.get<any>(
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/listar`),
+      { headers: getAuthHeaders() }
+    );
   }
 
   // Criar novo usuário
   createUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.apiUrl}/usuarios`, usuario);
+    return this.http.post<Usuario>(
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/criar`),
+      usuario,
+      { headers: getAuthHeaders() }
+    );
   }
 
   // Atualizar usuário
   updateUsuario(id: number, usuario: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>(`${this.apiUrl}/usuarios/${id}`, usuario);
+    return this.http.put<Usuario>(
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/atualizar/${id}`),
+      usuario,
+      { headers: getAuthHeaders() }
+    );
   }
 
   // Deletar usuário
   deleteUsuario(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/usuarios/${id}`);
+    return this.http.delete<void>(
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.USUARIOS}/deletar/${id}`),
+      { headers: getAuthHeaders() }
+    );
   }
 }

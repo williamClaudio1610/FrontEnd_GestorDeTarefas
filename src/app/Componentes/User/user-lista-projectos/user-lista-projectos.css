@@ -1,180 +1,341 @@
+/* User Lista Projetos - Design moderno e elegante */
 .projects-container {
-  padding: 1.5rem;
-  background: #1f2937;
+  padding: 2rem;
   min-height: 100vh;
-  color: #f9fafb;
 }
 
+/* Header da página */
 .projects-header {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+  font-size: 1.25rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Botão de criar projeto */
+.create-project-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
   margin-bottom: 2rem;
 }
 
-.projects-header h1 {
-  color: #f9fafb;
+.create-project-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
 }
 
-.projects-header p {
-  color: #d1d5db;
-}
-
+/* Grid de projetos */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2rem;
   margin-bottom: 2rem;
 }
 
+/* Cards de projeto PrimeNG */
 .project-card {
-  background: #374151;
-  border: 1px solid #4b5563;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 10px 20px -5px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(15px) !important;
+  overflow: hidden !important;
+  position: relative !important;
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4);
-  border-color: #60a5fa;
+  transform: translateY(-8px) !important;
+  box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.15), 0 15px 25px -5px rgba(0, 0, 0, 0.1) !important;
 }
 
-.project-header {
+/* Header do card */
+.project-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0 1.5rem !important;
+}
+
+.project-status-wrapper {
+  flex: 1;
+}
+
+.status-chip {
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: 20px !important;
+  padding: 0.25rem 0.75rem !important;
+}
+
+.status-chip.status-ativo {
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: #22c55e !important;
+}
+
+.status-chip.status-pendente {
+  background: rgba(251, 191, 36, 0.1) !important;
+  color: #f59e0b !important;
+}
+
+.status-chip.status-concluido {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #3b82f6 !important;
+}
+
+.status-chip.status-cancelado {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
+.status-chip.status-pausado {
+  background: rgba(107, 114, 128, 0.1) !important;
+  color: #6b7280 !important;
+}
+
+/* Conteúdo do card */
+.project-content {
+  padding: 1.5rem !important;
 }
 
 .project-title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #f9fafb;
-  margin-bottom: 0.5rem;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
   line-height: 1.3;
+  letter-spacing: -0.025em;
 }
 
 .project-description {
-  color: #d1d5db;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Meta informações */
+.project-meta {
+  margin-bottom: 1.5rem;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.project-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.meta-row:last-child {
+  margin-bottom: 0;
 }
 
 .meta-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  flex: 1;
+}
+
+.meta-icon {
+  color: #94a3b8;
+  font-size: 0.9rem;
 }
 
 .meta-label {
-  color: #9ca3af;
+  font-size: 0.8rem;
+  color: #94a3b8;
   font-weight: 500;
-  min-width: 80px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 45px;
 }
 
 .meta-value {
-  color: #e5e7eb;
-}
-
-.project-team {
-  background: #4b5563;
-  color: #f9fafb;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  color: #475569;
   font-weight: 500;
-  display: inline-block;
-  margin-top: 0.5rem;
 }
 
-.project-dates {
+.team-chip {
+  font-size: 0.8rem !important;
+  background: rgba(102, 126, 234, 0.1) !important;
+  color: #667eea !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+/* Progresso */
+.project-progress {
+  margin-top: 1.5rem;
+}
+
+.progress-header {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #4b5563;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
-.date-item {
-  text-align: center;
-}
-
-.date-label {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
-}
-
-.date-value {
-  font-size: 0.875rem;
-  color: #e5e7eb;
+.progress-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
   font-weight: 500;
-}
-
-.project-status {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.status-ativo {
-  background: #065f46;
-  color: #6ee7b7;
+.progress-value {
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 600;
 }
 
-.status-pendente {
-  background: #92400e;
-  color: #fbbf24;
+.project-progress-bar {
+  height: 8px !important;
+  border-radius: 10px !important;
+  background: #f1f5f9 !important;
 }
 
-.status-concluido {
-  background: #1e40af;
-  color: #93c5fd;
+/* Footer do card */
+.project-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem !important;
+  border-top: 1px solid #f1f5f9;
 }
 
-.status-cancelado {
-  background: #991b1b;
-  color: #fca5a5;
+.project-team-avatars {
+  display: flex;
+  align-items: center;
+  gap: -0.5rem;
 }
 
-.status-pausado {
-  background: #7c2d12;
-  color: #fdba74;
+.team-avatar {
+  width: 2rem !important;
+  height: 2rem !important;
+  font-size: 0.875rem !important;
+  border: 2px solid white !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  margin-right: -0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.team-avatar:hover {
+  z-index: 2;
+  transform: scale(1.1);
+}
+
+.more-members {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+  font-size: 0.75rem !important;
+  margin-left: 0.5rem;
+}
+
+/* Estado vazio */
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+}
+
+.empty-card {
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(15px) !important;
+  max-width: 400px;
+  width: 100%;
+}
+
+.empty-content {
+  text-align: center;
+  padding: 3rem 2rem !important;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #cbd5e1;
+  margin-bottom: 1.5rem;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+}
+
+.empty-message {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+}
+
+.empty-action {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
 }
 
 /* Estados de loading e erro */
-.loading-state,
-.error-state,
-.empty-state {
+.loading-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
   text-align: center;
-  padding: 3rem 1rem;
-  color: #d1d5db;
 }
 
 .loading-spinner {
-  border: 4px solid #4b5563;
-  border-top: 4px solid #60a5fa;
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid #f1f5f9;
+  border-left: 4px solid #667eea;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
   animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
+  margin-bottom: 1.5rem;
 }
 
 @keyframes spin {
@@ -183,43 +344,16 @@
 }
 
 .error-icon {
-  color: #ef4444;
   font-size: 3rem;
   margin-bottom: 1rem;
 }
 
-.empty-icon {
-  color: #9ca3af;
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-/* Botão de criar projeto */
-.create-project-btn {
-  background: #60a5fa;
-  color: #1f2937;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.create-project-btn:hover {
-  background: #3b82f6;
-  transform: translateY(-1px);
-}
-
-.create-project-btn:disabled {
-  background: #6b7280;
-  cursor: not-allowed;
-  transform: none;
+/* Aviso de permissões */
+.bg-yellow-900 {
+  background: rgba(180, 83, 9, 0.1) !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 /* Responsividade */
@@ -228,20 +362,329 @@
     padding: 1rem;
   }
   
+  .page-title {
+    font-size: 2.5rem;
+  }
+  
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   
-  .project-card {
-    padding: 1rem;
+  .project-content {
+    padding: 1rem !important;
   }
   
-  .project-title {
-    font-size: 1.125rem;
+  .project-footer {
+    padding: 1rem !important;
   }
   
-  .project-dates {
+  .meta-row {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    align-items: flex-start;
   }
+  
+  .meta-item {
+    width: 100%;
+  }
+  
+  .create-project-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Animações */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-card:nth-child(4) { animation-delay: 0.4s; }
+.project-card:nth-child(5) { animation-delay: 0.5s; }
+.project-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Tema escuro */
+body.theme-dark .page-title {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+body.theme-dark .page-subtitle {
+  color: #94a3b8;
+}
+
+body.theme-dark .project-card {
+  background: rgba(30, 41, 59, 0.8) !important;
+}
+
+body.theme-dark .project-title {
+  color: #f1f5f9;
+}
+
+body.theme-dark .project-description {
+  color: #cbd5e1;
+}
+
+body.theme-dark .meta-value {
+  color: #e2e8f0;
+}
+
+body.theme-dark .project-footer {
+  border-top-color: #334155;
+}
+
+body.theme-dark .empty-card {
+  background: rgba(30, 41, 59, 0.9) !important;
+}
+
+body.theme-dark .empty-title {
+  color: #f1f5f9;
+}
+
+body.theme-dark .empty-message {
+  color: #cbd5e1;
+}
+
+/* Estilos para o Dialog de criação - Força o fundo branco */
+:host ::ng-deep .create-project-dialog {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: none !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+:host ::ng-deep .create-project-dialog * {
+  background-color: inherit;
+}
+
+.create-project-dialog {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: none !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+:host ::ng-deep .create-project-dialog .p-dialog-header {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  border-radius: 20px 20px 0 0 !important;
+  padding: 1.5rem 2rem !important;
+}
+
+:host ::ng-deep .create-project-dialog .p-dialog-title {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+:host ::ng-deep .create-project-dialog .p-dialog-content {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  padding: 2rem !important;
+  border-radius: 0 !important;
+}
+
+:host ::ng-deep .create-project-dialog .p-dialog-footer {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border-top: 1px solid #f1f5f9 !important;
+  border-radius: 0 0 20px 20px !important;
+  padding: 1.5rem 2rem !important;
+}
+
+.create-project-dialog .p-dialog-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  border-radius: 20px 20px 0 0 !important;
+  padding: 1.5rem 2rem !important;
+}
+
+.create-project-dialog .p-dialog-title {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+.create-project-dialog .p-dialog-content {
+  background: #ffffff !important;
+  padding: 2rem !important;
+  border-radius: 0 !important;
+}
+
+.create-project-dialog .p-dialog-footer {
+  background: #ffffff !important;
+  border-top: 1px solid #f1f5f9 !important;
+  border-radius: 0 0 20px 20px !important;
+  padding: 1.5rem 2rem !important;
+}
+
+/* Formulário dentro do dialog */
+.create-project-dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.create-project-dialog label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151 !important;
+  margin-bottom: 0.5rem;
+}
+
+.create-project-dialog input,
+.create-project-dialog textarea,
+.create-project-dialog select {
+  width: 100% !important;
+  padding: 0.75rem 1rem !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  font-size: 0.875rem !important;
+  color: #1f2937 !important;
+  background: #ffffff !important;
+  transition: all 0.2s ease !important;
+}
+
+.create-project-dialog input:focus,
+.create-project-dialog textarea:focus,
+.create-project-dialog select:focus {
+  outline: none !important;
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+.create-project-dialog .border-red-500 {
+  border-color: #ef4444 !important;
+}
+
+.create-project-dialog .border-green-500 {
+  border-color: #22c55e !important;
+}
+
+.create-project-dialog .border-gray-300 {
+  border-color: #d1d5db !important;
+}
+
+.create-project-dialog small {
+  font-size: 0.75rem !important;
+  color: #ef4444 !important;
+  margin-top: 0.25rem !important;
+}
+
+/* Botões do dialog */
+.create-project-dialog .p-button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  padding: 0.75rem 1.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.create-project-dialog .p-button:not(.p-button-text) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  color: white !important;
+}
+
+.create-project-dialog .p-button:not(.p-button-text):hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4) !important;
+}
+
+.create-project-dialog .p-button.p-button-text {
+  background: #f8fafc !important;
+  color: #64748b !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.create-project-dialog .p-button.p-button-text:hover {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+/* Dialog overlay */
+.p-dialog-mask {
+  background: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(5px) !important;
+}
+
+/* Responsividade do dialog */
+@media (max-width: 768px) {
+  .create-project-dialog {
+    width: 95% !important;
+    margin: 1rem !important;
+  }
+  
+  .create-project-dialog .p-dialog-header {
+    padding: 1rem 1.5rem !important;
+  }
+  
+  .create-project-dialog .p-dialog-content {
+    padding: 1.5rem !important;
+  }
+  
+  .create-project-dialog .p-dialog-footer {
+    padding: 1rem 1.5rem !important;
+  }
+}
+
+/* Tema escuro para o dialog */
+body.theme-dark .create-project-dialog {
+  background: #1e293b !important;
+}
+
+body.theme-dark .create-project-dialog .p-dialog-header {
+  background: #1e293b !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.theme-dark .create-project-dialog .p-dialog-content {
+  background: #1e293b !important;
+}
+
+body.theme-dark .create-project-dialog .p-dialog-footer {
+  background: #1e293b !important;
+  border-top-color: #334155 !important;
+}
+
+body.theme-dark .create-project-dialog .p-dialog-title {
+  color: #f1f5f9 !important;
+}
+
+body.theme-dark .create-project-dialog label {
+  color: #e2e8f0 !important;
+}
+
+body.theme-dark .create-project-dialog input,
+body.theme-dark .create-project-dialog textarea,
+body.theme-dark .create-project-dialog select {
+  background: #374151 !important;
+  color: #f1f5f9 !important;
+  border-color: #475569 !important;
+}
+
+body.theme-dark .create-project-dialog input:focus,
+body.theme-dark .create-project-dialog textarea:focus,
+body.theme-dark .create-project-dialog select:focus {
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1) !important;
 }

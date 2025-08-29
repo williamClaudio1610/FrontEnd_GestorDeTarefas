@@ -1,1 +1,317 @@
-<p>user-dentro-do-projecto works!</p>
+<div class="project-detail-container">
+  <!-- Toast para notificações -->
+  <p-toast position="top-right"></p-toast>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Carregando dados do projeto...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <div class="error-icon">⚠️</div>
+    <h3 class="text-xl font-semibold mb-2">Erro ao carregar projeto</h3>
+    <p>Não foi possível carregar os dados do projeto. Tente novamente.</p>
+    <p-button 
+      label="Voltar aos Projetos" 
+      icon="pi pi-arrow-left"
+      (click)="router.navigate(['/user/projectos'])"
+      class="mt-4">
+    </p-button>
+  </div>
+
+  <!-- Project Content -->
+  <div *ngIf="!loading && !error && projeto" class="project-content">
+    
+    <!-- Header do Projeto -->
+    <p-card class="project-header-card">
+      <ng-template pTemplate="content">
+        <div class="project-header">
+          <div class="project-info">
+            <div class="project-title-section">
+              <h1 class="project-title">{{ projeto.nome }}</h1>
+              <p class="project-description">{{ projeto.descricao }}</p>
+            </div>
+            
+            <div class="project-meta-grid">
+              <div class="meta-item">
+                <i class="pi pi-users meta-icon"></i>
+                <div class="meta-content">
+                  <span class="meta-label">Equipe</span>
+                  <p-chip 
+                    [label]="projeto.equipe?.nome || 'Não definida'" 
+                    class="team-chip">
+                  </p-chip>
+                </div>
+              </div>
+
+              <div class="meta-item">
+                <i class="pi pi-calendar meta-icon"></i>
+                <div class="meta-content">
+                  <span class="meta-label">Início</span>
+                  <span class="meta-value">
+                    {{ projeto.dataInicio ? (projeto.dataInicio | date:'dd/MM/yyyy') : 'N/A' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="meta-item">
+                <i class="pi pi-calendar-times meta-icon"></i>
+                <div class="meta-content">
+                  <span class="meta-label">Prazo Final</span>
+                  <span class="meta-value" [class]="isTaskOverdue(projeto.dataFim!) ? 'overdue' : ''">
+                    {{ projeto.dataFim ? (projeto.dataFim | date:'dd/MM/yyyy') : 'N/A' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="meta-item">
+                <i class="pi pi-flag meta-icon"></i>
+                <div class="meta-content">
+                  <span class="meta-label">Status</span>
+                  <p-chip 
+                    label="Ativo" 
+                    class="status-chip">
+                  </p-chip>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-actions">
+            <p-button 
+              label="Nova Tarefa" 
+              icon="pi pi-plus"
+              (click)="openCreateTaskDialog()"
+              class="create-task-btn">
+            </p-button>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <!-- Lista de Tarefas -->
+    <div class="tasks-section">
+      <div class="section-header">
+        <h2 class="section-title">Tarefas do Projeto</h2>
+        <p-badge 
+          [value]="tarefas.length.toString()" 
+          class="tasks-count">
+        </p-badge>
+      </div>
+
+      <div class="tasks-grid" *ngIf="tarefas.length > 0">
+        <p-card 
+          *ngFor="let tarefa of tarefas" 
+          class="task-card"
+          [class]="getEstadoClass(tarefa.estado)">
+          
+          <ng-template pTemplate="header">
+            <div class="task-card-header">
+              <div class="task-status-wrapper">
+                <p-chip 
+                  [label]="getEstadoLabel(tarefa.estado)" 
+                  [class]="'status-chip ' + getEstadoClass(tarefa.estado)">
+                </p-chip>
+                <p-chip 
+                  [label]="getRelevanciaLabel(tarefa.relevancia)" 
+                  [class]="'relevancia-chip ' + getRelevanciaClass(tarefa.relevancia)">
+                </p-chip>
+              </div>
+              
+              <div class="task-deadline" [class]="isTaskOverdue(tarefa.dataLimite) ? 'overdue' : ''">
+                <i class="pi pi-clock"></i>
+                <span>{{ tarefa.dataLimite | date:'dd/MM/yyyy' }}</span>
+                <small *ngIf="!isTaskOverdue(tarefa.dataLimite)" class="days-left">
+                  ({{ getDaysUntilDeadline(tarefa.dataLimite) }} dias)
+                </small>
+                <small *ngIf="isTaskOverdue(tarefa.dataLimite)" class="overdue-text">
+                  (Atrasada)
+                </small>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="content">
+            <div class="task-content">
+              <h3 class="task-title">{{ tarefa.titulo }}</h3>
+              <p class="task-description">{{ tarefa.descricao }}</p>
+
+              <div class="task-assignee" *ngIf="tarefa.responsavel">
+                <div class="assignee-info">
+                  <p-avatar 
+                    [label]="tarefa.responsavel.nome.charAt(0).toUpperCase()" 
+                    class="assignee-avatar"
+                    [title]="tarefa.responsavel.nome">
+                  </p-avatar>
+                  <div class="assignee-details">
+                    <span class="assignee-name">{{ tarefa.responsavel.nome }}</span>
+                    <small class="assignee-role">{{ tarefa.responsavel.nivelHierarquico | titlecase }}</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="task-assignee" *ngIf="!tarefa.responsavel">
+                <div class="unassigned-info">
+                  <p-avatar 
+                    icon="pi pi-user" 
+                    class="unassigned-avatar">
+                  </p-avatar>
+                  <span class="unassigned-text">Não atribuída</span>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="footer">
+            <div class="task-footer">
+              <div class="task-meta">
+                <small class="task-id">ID: #{{ tarefa.id }}</small>
+                <small class="task-project">{{ projeto.nome }}</small>
+              </div>
+              <div class="task-actions">
+                <p-button 
+                  icon="pi pi-pencil" 
+                  class="p-button-text p-button-sm"
+                  title="Editar tarefa">
+                </p-button>
+                <p-button 
+                  icon="pi pi-eye" 
+                  class="p-button-text p-button-sm"
+                  title="Ver detalhes">
+                </p-button>
+              </div>
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="tarefas.length === 0" class="empty-tasks-state">
+        <p-card class="empty-card">
+          <ng-template pTemplate="content">
+            <div class="empty-content">
+              <i class="pi pi-list empty-icon"></i>
+              <h3 class="empty-title">Nenhuma tarefa encontrada</h3>
+              <p class="empty-message">Este projeto ainda não possui tarefas. Crie a primeira tarefa para começar!</p>
+              <p-button 
+                label="Criar Primeira Tarefa" 
+                icon="pi pi-plus" 
+                (click)="openCreateTaskDialog()"
+                class="empty-action">
+              </p-button>
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog de Criação de Tarefa -->
+  <p-dialog 
+    [(visible)]="showCreateTaskDialog" 
+    header="Nova Tarefa" 
+    [modal]="true" 
+    [style]="{width: '600px', backgroundColor: '#ffffff'}"
+    [draggable]="false" 
+    [resizable]="false"
+    styleClass="create-task-dialog">
+    
+    <form [formGroup]="createTaskForm" (ngSubmit)="createTask()" class="task-form">
+      <!-- Título da Tarefa -->
+      <div class="form-field">
+        <label class="field-label">
+          Título da Tarefa *
+        </label>
+        <input 
+          type="text" 
+          formControlName="titulo"
+          [class]="'form-input ' + getFieldClasses('titulo')"
+          placeholder="Digite o título da tarefa">
+        <small *ngIf="hasFieldError('titulo')" class="field-error">
+          {{ getFieldError('titulo') }}
+        </small>
+      </div>
+
+      <!-- Descrição -->
+      <div class="form-field">
+        <label class="field-label">
+          Descrição *
+        </label>
+        <textarea 
+          formControlName="descricao"
+          [class]="'form-textarea ' + getFieldClasses('descricao')"
+          rows="4"
+          placeholder="Descreva a tarefa em detalhes"></textarea>
+        <small *ngIf="hasFieldError('descricao')" class="field-error">
+          {{ getFieldError('descricao') }}
+        </small>
+      </div>
+
+      <!-- Relevância -->
+      <div class="form-field">
+        <label class="field-label">
+          Grau de Relevância *
+        </label>
+        <select 
+          formControlName="relevancia"
+          [class]="'form-select ' + getFieldClasses('relevancia')">
+          <option value="">Selecione a relevância</option>
+          <option *ngFor="let option of relevanciaOptions" [value]="option.value">{{ option.label }}</option>
+        </select>
+        <small *ngIf="hasFieldError('relevancia')" class="field-error">
+          {{ getFieldError('relevancia') }}
+        </small>
+      </div>
+
+      <!-- Data Limite -->
+      <div class="form-field">
+        <label class="field-label">
+          Data Limite *
+        </label>
+        <input 
+          type="date" 
+          formControlName="dataLimite"
+          [class]="'form-input ' + getFieldClasses('dataLimite')">
+        <small *ngIf="hasFieldError('dataLimite')" class="field-error">
+          {{ getFieldError('dataLimite') }}
+        </small>
+      </div>
+
+      <!-- Responsável -->
+      <div class="form-field">
+        <label class="field-label">
+          Responsável
+        </label>
+        <select 
+          formControlName="responsavelId"
+          [class]="'form-select ' + getFieldClasses('responsavelId')">
+          <option value="">Selecione um responsável (opcional)</option>
+          <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nome }}</option>
+        </select>
+        <small class="field-help">
+          Deixe em branco se a tarefa não tiver responsável específico
+        </small>
+      </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <div class="dialog-footer">
+        <p-button 
+          label="Cancelar"
+          icon="pi pi-times"
+          (click)="closeCreateTaskDialog()"
+          class="p-button-text">
+        </p-button>
+        <p-button 
+          label="Criar Tarefa"
+          icon="pi pi-check"
+          (click)="createTask()"
+          [disabled]="createTaskForm.invalid || isCreatingTask"
+          [loading]="isCreatingTask">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>

@@ -1,7 +1,17 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, OnDestroy, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../../Servicos/theme.service';
+import { AuthService } from '../../../../Servicos/auth.service';
+
+interface CurrentUserDisplay {
+  name: string;
+  email: string;
+  avatar: string;
+  role: string;
+  nivelHierarquico: string;
+}
 
 @Component({
   selector: 'app-side-menu',
@@ -10,7 +20,7 @@ import { ThemeService } from '../../../../Servicos/theme.service';
   templateUrl: './side-menu.html',
   styleUrl: './side-menu.css'
 })
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent implements OnInit, OnDestroy {
   // Estado do menu
   isCollapsed = false;
   activeMenuItem = 'dashboard';
@@ -20,12 +30,16 @@ export class SideMenuComponent implements OnInit {
   // Tema claro/escuro
   isDarkTheme = false;
 
-  // Dados do usuário (mock - substituir por dados reais)
-  currentUser = {
-    name: 'Admin User',
-    email: 'admin@gestor.com',
-    avatar: 'A',
-    role: 'ADMIN'
+  // Subscription para cleanup
+  private userSubscription: Subscription = new Subscription();
+
+  // Dados do usuário (carregados do backend)
+  currentUser: CurrentUserDisplay = {
+    name: '',
+    email: '',
+    avatar: '',
+    role: '',
+    nivelHierarquico: ''
   };
 
   // Itens do menu
@@ -79,12 +93,37 @@ export class SideMenuComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router, private theme: ThemeService) {}
+  constructor(
+    private router: Router, 
+    private theme: ThemeService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.theme.init();
     this.isDarkTheme = this.theme.isDark();
     this.collapsedChange.emit(this.isCollapsed);
+    
+    // Inscrever-se nas mudanças do usuário logado
+    this.userSubscription = this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.loadCurrentUser();
+      }
+    });
+  }
+
+  loadCurrentUser(): void {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      console.log('Dados do usuário admin carregados do backend:', user);
+      this.currentUser = {
+        name: user.nome,
+        email: user.email,
+        avatar: user.nome.charAt(0).toUpperCase(),
+        role: user.role,
+        nivelHierarquico: user.nivelHierarquico || ''
+      };
+    }
   }
 
   // Alternar estado do menu (colapsar/expandir)
@@ -116,8 +155,7 @@ export class SideMenuComponent implements OnInit {
 
   // Fazer logout
   logout() {
-    // Implementar lógica de logout
-    console.log('Logout realizado');
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 
@@ -136,5 +174,11 @@ export class SideMenuComponent implements OnInit {
   // Obter classes CSS para o texto de um item
   getTextClasses(item: any): string {
     return 'nav-text';
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 }

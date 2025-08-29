@@ -157,6 +157,7 @@ export class EquipesComponent implements OnInit {
     this.newEquipe = {
       nome: '',
       descricao: '',
+      liderId: 0,
       membrosIds: [],
       emailsConvite: []
     };

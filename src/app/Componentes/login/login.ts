@@ -14,7 +14,7 @@ import { MessageService } from 'primeng/api';
 
 // Services
 import { AuthService } from '../../../Servicos/auth.service';
-import { Role } from '../../../Modelos/Usuario';
+import { EstadoUsuario, Role } from '../../../Modelos/Usuario';
 
 @Component({
   selector: 'app-login',
@@ -125,16 +125,20 @@ export class Login {
     // Extrair usuário da estrutura real: response.data.user
     let user = null;
     let role = null;
+    let estadoUser = null;
     
     if (response?.data?.user) {
       user = response.data.user;
       role = response.data.user.role;
+      estadoUser = response.data.user.estado;
     } else if (response?.user) {
       user = response.user;
       role = response.user.role;
+      estadoUser = response.user.estado;
     } else if (response?.usuario) {
       user = response.usuario;
       role = response.usuario.role;
+      estadoUser = response.usuario.estado;
     }
     
     console.log('Usuário extraído:', user);
@@ -152,6 +156,16 @@ export class Login {
     }
 
     const roleLower = role.toLowerCase();
+
+    if (estadoUser != EstadoUsuario.ATIVO) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro no Login',
+        detail: 'Usuário inativo. Por favor, contate o suporte.',
+        life: 5000
+      });
+      return;
+    }
     
     if (roleLower === Role.ADMIN || roleLower === 'admin') {
       console.log('Usuário é ADMIN, redirecionando para área administrativa');

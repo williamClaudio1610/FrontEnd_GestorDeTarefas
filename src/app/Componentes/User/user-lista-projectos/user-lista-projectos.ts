@@ -10,6 +10,12 @@ import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
+import { BadgeModule } from 'primeng/badge';
+import { AvatarModule } from 'primeng/avatar';
+
+import { ProgressBarModule } from 'primeng/progressbar';
 import { NivelHierarquico } from '../../../../Modelos/Usuario';
 
 @Component({
@@ -22,7 +28,13 @@ import { NivelHierarquico } from '../../../../Modelos/Usuario';
     ToastModule, 
     DialogModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    CardModule,
+    ChipModule,
+    BadgeModule,
+    AvatarModule,
+
+    ProgressBarModule
   ],
   templateUrl: './user-lista-projectos.html',
   styleUrl: './user-lista-projectos.css',
@@ -93,8 +105,14 @@ export class UserListaProjectosComponent implements OnInit {
 
     this.usuarioService.getDadosConsolidados().subscribe({
       next: (response: any) => {
-        this.projetos = response.data.projetos || [];
+        const projectosData = response.data.projetos || [];
+        // Mapear os dados para garantir que equipeNome seja extraído corretamente
+        this.projetos = projectosData.map((projeto: any) => ({
+          ...projeto,
+          equipeNome: projeto.equipe?.nome || 'Equipe não definida'
+        }));
         this.loading = false;
+        console.log('Projetos carregados:', this.projetos);
       },
       error: (error: any) => {
         console.error('Erro ao carregar projetos:', error);

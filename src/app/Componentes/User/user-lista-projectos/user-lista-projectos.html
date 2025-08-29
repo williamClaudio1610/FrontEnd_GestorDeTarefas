@@ -3,8 +3,8 @@
   <p-toast position="top-right"></p-toast>
   
   <div class="projects-header">
-    <h1 class="text-3xl font-bold mb-2">Meus Projetos</h1>
-    <p class="text-lg">Visualize e gerencie os projetos em que você está envolvido</p>
+    <h1 class="page-title">Meus Projetos</h1>
+    <p class="page-subtitle">Visualize e gerencie os projetos em que você está envolvido</p>
   </div>
 
   <!-- Botão de criar projeto (apenas para usuários autorizados) -->
@@ -55,57 +55,96 @@
   <!-- Lista de projetos -->
   <div *ngIf="!loading && !error" class="projects-grid">
     <!-- Projetos existentes -->
-    <div 
+    <p-card 
       *ngFor="let projeto of projetos" 
-      class="project-card relative">
+      class="project-card"
+      [class]="getEstadoClass(projeto.estado)">
       
-      <!-- Status do projeto -->
-      <div [class]="'project-status ' + getEstadoClass(projeto.estado)">
-        {{ getEstadoLabel(projeto.estado) }}
-      </div>
-
-      <div class="project-header">
-        <div class="project-title">{{ projeto.nome }}</div>
-      </div>
-
-      <div class="project-description">{{ projeto.descricao }}</div>
-
-      <div class="project-meta">
-        <div class="meta-item">
-          <span class="meta-label">Equipe:</span>
-          <span class="meta-value">{{ projeto.equipeNome || 'N/A' }}</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">ID:</span>
-          <span class="meta-value">#{{ projeto.id }}</span>
-        </div>
-      </div>
-
-      <div class="project-team">
-        {{ projeto.equipeNome || 'Equipe não definida' }}
-      </div>
-
-      <div class="project-dates">
-        <div class="date-item">
-          <div class="date-label">Início</div>
-          <div class="date-value">
-            {{ projeto.dataInicio ? (projeto.dataInicio | date:'dd/MM/yyyy') : 'N/A' }}
+      <ng-template pTemplate="header">
+        <div class="project-card-header">
+          <div class="project-status-wrapper">
+            <p-chip 
+              [label]="getEstadoLabel(projeto.estado)" 
+              [class]="'status-chip ' + getEstadoClass(projeto.estado)">
+            </p-chip>
+          </div>
+          <div class="project-actions">
+            <p-button 
+              icon="pi pi-ellipsis-v" 
+              class="p-button-text p-button-rounded" 
+              size="small">
+            </p-button>
           </div>
         </div>
-        <div class="date-item">
-          <div class="date-label">Fim</div>
-          <div class="date-value">
-            {{ projeto.dataFim ? (projeto.dataFim | date:'dd/MM/yyyy') : 'N/A' }}
+      </ng-template>
+
+      <ng-template pTemplate="content">
+        <div class="project-content">
+          <h3 class="project-title">{{ projeto.nome }}</h3>
+          <p class="project-description">{{ projeto.descricao }}</p>
+
+          <div class="project-meta">
+            <div class="meta-row">
+              <div class="meta-item">
+                <i class="pi pi-users meta-icon"></i>
+                <span class="meta-label">Equipe</span>
+                <p-chip 
+                  [label]="projeto.equipeNome || projeto.equipe?.nome || 'Não definida'" 
+                  class="team-chip">
+                </p-chip>
+              </div>
+            </div>
+
+            <div class="meta-row">
+              <div class="meta-item">
+                <i class="pi pi-calendar meta-icon"></i>
+                <span class="meta-label">Início</span>
+                <span class="meta-value">
+                  {{ projeto.dataInicio ? (projeto.dataInicio | date:'dd/MM/yyyy') : 'N/A' }}
+                </span>
+              </div>
+              <div class="meta-item">
+                <i class="pi pi-calendar-times meta-icon"></i>
+                <span class="meta-label">Fim</span>
+                <span class="meta-value">
+                  {{ projeto.dataFim ? (projeto.dataFim | date:'dd/MM/yyyy') : 'N/A' }}
+                </span>
+              </div>
+            </div>
           </div>
+
         </div>
-      </div>
-    </div>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <div class="project-footer">
+          <p-button 
+            label="Abrir" 
+            icon="pi pi-arrow-right" 
+            class="p-button-outlined p-button-sm">
+          </p-button>
+        </div>
+      </ng-template>
+    </p-card>
 
     <!-- Mensagem quando não há projetos -->
-    <div *ngIf="projetos.length === 0" class="empty-state col-span-full">
-      <div class="empty-icon">📋</div>
-      <h3 class="text-xl font-semibold mb-2">Nenhum projeto encontrado</h3>
-      <p>Você ainda não está envolvido em nenhum projeto.</p>
+    <div *ngIf="projetos.length === 0" class="empty-state">
+      <p-card class="empty-card">
+        <ng-template pTemplate="content">
+          <div class="empty-content">
+            <i class="pi pi-folder-open empty-icon"></i>
+            <h3 class="empty-title">Nenhum projeto encontrado</h3>
+            <p class="empty-message">Você ainda não está envolvido em nenhum projeto.</p>
+            <p-button 
+              *ngIf="canCreateProject"
+              label="Criar Primeiro Projeto" 
+              icon="pi pi-plus" 
+              (click)="openCreateDialog()"
+              class="empty-action">
+            </p-button>
+          </div>
+        </ng-template>
+      </p-card>
     </div>
   </div>
 
@@ -114,9 +153,10 @@
     [(visible)]="showCreateDialog" 
     header="Criar Novo Projeto" 
     [modal]="true" 
-    [style]="{width: '600px'}"
+    [style]="{width: '600px', backgroundColor: '#ffffff'}"
     [draggable]="false" 
-    [resizable]="false">
+    [resizable]="false"
+    styleClass="create-project-dialog">
     
     <form [formGroup]="createForm" (ngSubmit)="createProject()" class="space-y-4">
       <!-- Nome do projeto -->

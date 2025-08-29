@@ -1,81 +1,108 @@
 <div class="user-dashboard">
+  <!-- Header elegante -->
   <div class="dashboard-header">
-    <h1 class="dashboard-title">Dashboard do Usuário</h1>
+    <h1 class="dashboard-title">Dashboard</h1>
     <p class="dashboard-subtitle">Bem-vindo de volta! Aqui está um resumo das suas atividades.</p>
   </div>
 
-  <!-- Cards de estatísticas -->
+  <!-- Cards de estatísticas com PrimeNG -->
   <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon projects">
-        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-        </svg>
-      </div>
-      <div class="stat-content">
-        <h3 class="stat-number">{{ userStats.totalProjects }}</h3>
-        <p class="stat-label">Projetos Ativos</p>
-      </div>
-    </div>
+    <p-card class="stat-card projects">
+      <ng-template pTemplate="content">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-briefcase"></i>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-number">{{ userStats.totalProjects }}</h3>
+            <p class="stat-label">Projetos Ativos</p>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
 
-    <div class="stat-card">
-      <div class="stat-icon tasks">
-        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-        </svg>
-      </div>
-      <div class="stat-content">
-        <h3 class="stat-number">{{ userStats.activeTasks }}</h3>
-        <p class="stat-label">Tarefas Ativas</p>
-      </div>
-    </div>
+    <p-card class="stat-card tasks">
+      <ng-template pTemplate="content">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-list-check"></i>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-number">{{ userStats.activeTasks }}</h3>
+            <p class="stat-label">Tarefas Ativas</p>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
 
-    <div class="stat-card">
-      <div class="stat-icon completed">
-        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      </div>
-      <div class="stat-content">
-        <h3 class="stat-number">{{ userStats.completedTasks }}</h3>
-        <p class="stat-label">Tarefas Concluídas</p>
-      </div>
-    </div>
+    <p-card class="stat-card completed">
+      <ng-template pTemplate="content">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-number">{{ userStats.completedTasks }}</h3>
+            <p class="stat-label">Tarefas Concluídas</p>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
 
-    <div class="stat-card">
-      <div class="stat-icon teams">
-        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      </div>
-      <div class="stat-content">
-        <h3 class="stat-number">{{ userStats.teamMembers }}</h3>
-        <p class="stat-label">Membros da Equipe</p>
-      </div>
-    </div>
+    <p-card class="stat-card teams">
+      <ng-template pTemplate="content">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="pi pi-users"></i>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-number">{{ userStats.teamMembers }}</h3>
+            <p class="stat-label">Membros da Equipe</p>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
   </div>
 
-  <!-- Atividades recentes -->
-  <div class="recent-activities">
-    <h2 class="section-title">Atividades Recentes</h2>
-    <div class="activities-list">
-      <div *ngFor="let activity of recentActivities" class="activity-item">
-        <div class="activity-icon" [class]="'activity-' + activity.type">
-          <svg *ngIf="activity.type === 'task'" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-          <svg *ngIf="activity.type === 'project'" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-          </svg>
-          <svg *ngIf="activity.type === 'team'" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        </div>
-        <div class="activity-content">
-          <p class="activity-message">{{ activity.message }}</p>
-          <span class="activity-time">{{ activity.time }}</span>
+  <!-- Atividades recentes com PrimeNG Card -->
+  <p-card class="activities-card">
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <h2 class="section-title">Atividades Recentes</h2>
+        <p-chip label="Hoje" icon="pi pi-calendar" class="date-chip"></p-chip>
+      </div>
+    </ng-template>
+    
+    <ng-template pTemplate="content">
+      <div class="activities-list">
+        <div *ngFor="let activity of recentActivities" class="activity-item">
+          <p-avatar 
+            [icon]="getActivityIcon(activity.type)" 
+            [class]="'activity-avatar ' + activity.type"
+            size="large">
+          </p-avatar>
+          <div class="activity-content">
+            <p class="activity-message">{{ activity.message }}</p>
+            <div class="activity-meta">
+              <span class="activity-time">{{ activity.time }}</span>
+              <p-chip 
+                [label]="getActivityLabel(activity.type)" 
+                [class]="'activity-chip ' + activity.type">
+              </p-chip>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <div class="card-footer">
+        <p-button 
+          label="Ver Todas as Atividades" 
+          icon="pi pi-external-link" 
+          class="p-button-text">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-card>
 </div>
