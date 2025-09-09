@@ -84,6 +84,16 @@ export class TarefaService {
   }
 
   /**
+   * Obter tarefas por projeto
+   */
+  getTarefasByProjecto(projectoId: number): Observable<any> {
+    return this.http.get<any>(
+      buildApiUrl(`${API_CONFIG.ENDPOINTS.PROJECTOS}/${projectoId}/tarefas`),
+      { headers: getAuthHeaders() }
+    );
+  }
+
+  /**
    * Obter estatísticas das tarefas
    */
   // Métodos extra removidos por não existirem no backend atual

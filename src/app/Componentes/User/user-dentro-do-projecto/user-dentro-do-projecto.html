@@ -71,8 +71,8 @@
                 <div class="meta-content">
                   <span class="meta-label">Status</span>
                   <p-chip 
-                    label="Ativo" 
-                    class="status-chip">
+                    [label]="getEstadoProjectoLabel(projeto.estado)" 
+                    [class]="'status-chip ' + getEstadoProjectoClass(projeto.estado)">
                   </p-chip>
                 </div>
               </div>
@@ -85,6 +85,12 @@
               icon="pi pi-plus"
               (click)="openCreateTaskDialog()"
               class="create-task-btn">
+            </p-button>
+            <p-button 
+              label="Editar Projeto" 
+              icon="pi pi-pencil"
+              (click)="openEditProjectDialog()"
+              class="edit-project-btn">
             </p-button>
           </div>
         </div>
@@ -288,7 +294,7 @@
           formControlName="responsavelId"
           [class]="'form-select ' + getFieldClasses('responsavelId')">
           <option value="">Selecione um responsável (opcional)</option>
-          <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nome }}</option>
+          <option *ngFor="let usuario of usuariosEquipe" [value]="usuario.id">{{ usuario.nome }}</option>
         </select>
         <small class="field-help">
           Deixe em branco se a tarefa não tiver responsável específico
@@ -310,6 +316,127 @@
           (click)="createTask()"
           [disabled]="createTaskForm.invalid || isCreatingTask"
           [loading]="isCreatingTask">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <!-- Dialog de Edição de Projeto -->
+  <p-dialog 
+    [(visible)]="showEditProjectDialog" 
+    header="Editar Projeto" 
+    [modal]="true" 
+    [style]="{width: '700px', backgroundColor: '#ffffff'}"
+    [draggable]="false" 
+    [resizable]="false"
+    styleClass="edit-project-dialog">
+    
+    <form [formGroup]="editProjectForm" (ngSubmit)="editProject()" class="project-form">
+      <!-- Nome do Projeto -->
+      <div class="form-field">
+        <label class="field-label">
+          Nome do Projeto *
+        </label>
+        <input 
+          type="text" 
+          formControlName="nome"
+          [class]="'form-input ' + getFieldClasses('nome', editProjectForm)"
+          placeholder="Digite o nome do projeto">
+        <small *ngIf="hasFieldError('nome', editProjectForm)" class="field-error">
+          {{ getFieldError('nome', editProjectForm) }}
+        </small>
+      </div>
+
+      <!-- Descrição -->
+      <div class="form-field">
+        <label class="field-label">
+          Descrição *
+        </label>
+        <textarea 
+          formControlName="descricao"
+          [class]="'form-textarea ' + getFieldClasses('descricao', editProjectForm)"
+          rows="4"
+          placeholder="Descreva o projeto em detalhes"></textarea>
+        <small *ngIf="hasFieldError('descricao', editProjectForm)" class="field-error">
+          {{ getFieldError('descricao', editProjectForm) }}
+        </small>
+      </div>
+
+      <!-- Data de Início -->
+      <div class="form-field">
+        <label class="field-label">
+          Data de Início *
+        </label>
+        <input 
+          type="date" 
+          formControlName="dataInicio"
+          [class]="'form-input ' + getFieldClasses('dataInicio', editProjectForm)">
+        <small *ngIf="hasFieldError('dataInicio', editProjectForm)" class="field-error">
+          {{ getFieldError('dataInicio', editProjectForm) }}
+        </small>
+      </div>
+
+      <!-- Data de Fim -->
+      <div class="form-field">
+        <label class="field-label">
+          Data de Fim *
+        </label>
+        <input 
+          type="date" 
+          formControlName="dataFim"
+          [class]="'form-input ' + getFieldClasses('dataFim', editProjectForm)">
+        <small *ngIf="hasFieldError('dataFim', editProjectForm)" class="field-error">
+          {{ getFieldError('dataFim', editProjectForm) }}
+        </small>
+      </div>
+
+      <!-- Estado do Projeto -->
+      <div class="form-field">
+        <label class="field-label">
+          Estado do Projeto *
+        </label>
+        <select 
+          formControlName="estado"
+          [class]="'form-select ' + getFieldClasses('estado', editProjectForm)">
+          <option value="">Selecione um estado</option>
+          <option *ngFor="let estado of estadoProjectoOptions" [value]="estado.value">{{ estado.label }}</option>
+        </select>
+        <small *ngIf="hasFieldError('estado', editProjectForm)" class="field-error">
+          {{ getFieldError('estado', editProjectForm) }}
+        </small>
+      </div>
+
+      <!-- Equipe -->
+      <div class="form-field">
+        <label class="field-label">
+          Equipe Responsável *
+        </label>
+        <select 
+          formControlName="equipeId"
+          [class]="'form-select ' + getFieldClasses('equipeId', editProjectForm)">
+          <option value="">Selecione uma equipe</option>
+          <option *ngFor="let equipe of equipes" [value]="equipe.id">{{ equipe.nome }}</option>
+        </select>
+        <small *ngIf="hasFieldError('equipeId', editProjectForm)" class="field-error">
+          {{ getFieldError('equipeId', editProjectForm) }}
+        </small>
+      </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <div class="dialog-footer">
+        <p-button 
+          label="Cancelar"
+          icon="pi pi-times"
+          (click)="closeEditProjectDialog()"
+          class="p-button-text">
+        </p-button>
+        <p-button 
+          label="Salvar Alterações"
+          icon="pi pi-check"
+          (click)="editProject()"
+          [disabled]="editProjectForm.invalid || isEditingProject"
+          [loading]="isEditingProject">
         </p-button>
       </div>
     </ng-template>

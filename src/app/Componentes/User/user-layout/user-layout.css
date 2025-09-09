@@ -1,8 +1,8 @@
-/* User Layout - Container principal com fundo cinza elegante */
+/* User Layout - Container principal com fundo escuro elegante */
 .user-layout {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
 /* Conteúdo principal */
@@ -11,7 +11,7 @@
   margin-left: 240px; /* Largura do sidebar */
   transition: margin-left 0.3s ease;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
 /* Quando o sidebar está colapsado */
@@ -21,9 +21,11 @@
 
 /* Wrapper do conteúdo */
 .content-wrapper {
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: 1.5rem;
+  max-width: 100%;
+  margin: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 /* Responsividade */
@@ -68,15 +70,14 @@
 
 /* Tema escuro */
 body.theme-dark .user-layout {
-  background: #0f172a;
+  background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
 }
 
 body.theme-dark .main-content {
-  background: #0f172a;
+  background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
 }
 
 body.theme-dark .content-wrapper > * {
-  background: #111827;
+  background: transparent;
   color: #e5e7eb;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }

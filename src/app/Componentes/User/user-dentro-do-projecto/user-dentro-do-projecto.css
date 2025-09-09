@@ -1,6 +1,6 @@
 /* Project Detail - Design moderno e elegante */
 .project-detail-container {
-  padding: 2rem;
+  padding: 0;
   min-height: 100vh;
   background: transparent;
 }
@@ -38,10 +38,11 @@
 /* Header do Projeto */
 .project-header-card {
   border: none !important;
-  border-radius: 20px !important;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 10px 20px -5px rgba(0, 0, 0, 0.04) !important;
-  background: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(15px) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(30, 41, 59, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(148, 163, 184, 0.1) !important;
   margin-bottom: 2rem;
 }
 
@@ -64,7 +65,7 @@
 .project-title {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #94a3b8 0%, #e2e8f0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -74,7 +75,7 @@
 
 .project-description {
   font-size: 1.125rem;
-  color: #64748b;
+  color: #cbd5e1;
   margin: 0;
   line-height: 1.6;
 }
@@ -92,7 +93,7 @@
 }
 
 .meta-icon {
-  color: #94a3b8;
+  color: #cbd5e1;
   font-size: 1.25rem;
 }
 
@@ -104,7 +105,7 @@
 
 .meta-label {
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: #cbd5e1;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -112,7 +113,7 @@
 
 .meta-value {
   font-size: 0.95rem;
-  color: #475569;
+  color: #e2e8f0;
   font-weight: 500;
 }
 
@@ -131,15 +132,40 @@
 
 .status-chip {
   font-size: 0.85rem !important;
-  background: rgba(34, 197, 94, 0.1) !important;
-  color: #22c55e !important;
   border: none !important;
   font-weight: 500 !important;
+}
+
+/* Estados do projeto */
+.status-chip.estado-projeto-ativo {
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: #22c55e !important;
+}
+
+.status-chip.estado-projeto-pausado {
+  background: rgba(245, 158, 11, 0.1) !important;
+  color: #f59e0b !important;
+}
+
+.status-chip.estado-projeto-concluido {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #3b82f6 !important;
+}
+
+.status-chip.estado-projeto-cancelado {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
+.status-chip.estado-projeto-pendente {
+  background: rgba(107, 114, 128, 0.1) !important;
+  color: #6b7280 !important;
 }
 
 .project-actions {
   display: flex;
   align-items: flex-start;
+  gap: 1rem;
 }
 
 .create-task-btn {
@@ -155,6 +181,21 @@
 .create-task-btn:hover {
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6) !important;
+}
+
+.edit-project-btn {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 1.5rem !important;
+  box-shadow: 0 4px 15px rgba(107, 114, 128, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+.edit-project-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.6) !important;
 }
 
 /* Seção de Tarefas */
@@ -195,17 +236,18 @@
 .task-card {
   border: none !important;
   border-radius: 16px !important;
-  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 15px -5px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  background: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(10px) !important;
+  background: rgba(51, 65, 85, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(148, 163, 184, 0.1) !important;
   overflow: hidden !important;
   position: relative !important;
 }
 
 .task-card:hover {
   transform: translateY(-4px) !important;
-  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
 }
 
 .task-card::before {
@@ -321,14 +363,14 @@
 .task-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #f1f5f9;
   margin: 0 0 0.75rem 0;
   line-height: 1.4;
 }
 
 .task-description {
   font-size: 0.9rem;
-  color: #64748b;
+  color: #cbd5e1;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
   display: -webkit-box;
@@ -369,7 +411,7 @@
 .assignee-name {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #374151;
+  color: #f1f5f9;
 }
 
 .assignee-role {
@@ -466,6 +508,37 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
 }
 
+/* Dialog de Edição de Projeto */
+:host ::ng-deep .edit-project-dialog {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: none !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+:host ::ng-deep .edit-project-dialog .p-dialog-header {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  border-radius: 20px 20px 0 0 !important;
+  padding: 1.5rem 2rem !important;
+}
+
+:host ::ng-deep .edit-project-dialog .p-dialog-content {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  padding: 2rem !important;
+}
+
+:host ::ng-deep .edit-project-dialog .p-dialog-footer {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border-top: 1px solid #f1f5f9 !important;
+  border-radius: 0 0 20px 20px !important;
+  padding: 1.5rem 2rem !important;
+}
+
 :host ::ng-deep .create-task-dialog .p-dialog-header {
   background-color: #ffffff !important;
   background: #ffffff !important;
@@ -488,7 +561,7 @@
   padding: 1.5rem 2rem !important;
 }
 
-.task-form {
+.task-form, .project-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -676,6 +749,24 @@ body.theme-dark .create-task-dialog .p-dialog-content {
 }
 
 body.theme-dark .create-task-dialog .p-dialog-footer {
+  background: #1e293b !important;
+  border-top-color: #334155 !important;
+}
+
+body.theme-dark .edit-project-dialog {
+  background: #1e293b !important;
+}
+
+body.theme-dark .edit-project-dialog .p-dialog-header {
+  background: #1e293b !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.theme-dark .edit-project-dialog .p-dialog-content {
+  background: #1e293b !important;
+}
+
+body.theme-dark .edit-project-dialog .p-dialog-footer {
   background: #1e293b !important;
   border-top-color: #334155 !important;
 }

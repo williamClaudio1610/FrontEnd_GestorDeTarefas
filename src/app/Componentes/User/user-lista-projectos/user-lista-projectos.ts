@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../../Servicos/usuario.service';
 import { ProjectoService } from '../../../../Servicos/projecto.service';
 import { EquipeService } from '../../../../Servicos/equipe.service';
 import { AuthService } from '../../../../Servicos/auth.service';
+import { EstadoProjecto } from '../../../../Modelos/Projecto';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
@@ -61,6 +63,7 @@ export class UserListaProjectosComponent implements OnInit {
     private equipeService: EquipeService,
     private authService: AuthService,
     private messageService: MessageService,
+    private router: Router,
     private fb: FormBuilder
   ) {
     this.createForm = this.fb.group({
@@ -270,33 +273,63 @@ export class UserListaProjectosComponent implements OnInit {
     return 'border-gray-300';
   }
 
-  /**
-   * Obtém a classe CSS para o status do projeto
-   */
-  getEstadoClass(estado: string): string {
-    const estadoLower = estado?.toLowerCase();
-    switch (estadoLower) {
-      case 'ativo': return 'status-ativo';
-      case 'pendente': return 'status-pendente';
-      case 'concluido': return 'status-concluido';
-      case 'cancelado': return 'status-cancelado';
-      case 'pausado': return 'status-pausado';
-      default: return 'status-pendente';
-    }
-  }
+
 
   /**
    * Obtém o label para o status do projeto
    */
-  getEstadoLabel(estado: string): string {
-    const estadoLower = estado?.toLowerCase();
-    switch (estadoLower) {
+  getEstadoLabel(estado: EstadoProjecto | string): string {
+    if (typeof estado === 'string') {
+      const estadoLower = estado.toLowerCase();
+      switch (estadoLower) {
+        case 'ativo': return 'Ativo';
+        case 'pendente': return 'Pendente';
+        case 'concluido': return 'Concluído';
+        case 'cancelado': return 'Cancelado';
+        case 'pausado': return 'Pausado';
+        default: return 'Ativo';
+      }
+    }
+    
+    switch (estado) {
       case 'ativo': return 'Ativo';
-      case 'pendente': return 'Pendente';
+      case 'pausado': return 'Pausado';
       case 'concluido': return 'Concluído';
       case 'cancelado': return 'Cancelado';
-      case 'pausado': return 'Pausado';
-      default: return 'Pendente';
+      case 'pendente': return 'Pendente';
+      default: return 'Ativo';
     }
+  }
+
+  /**
+   * Obtém a classe CSS para o status do projeto
+   */
+  getEstadoClass(estado: EstadoProjecto | string): string {
+    if (typeof estado === 'string') {
+      const estadoLower = estado.toLowerCase();
+      switch (estadoLower) {
+        case 'ativo': return 'estado-projeto-ativo';
+        case 'pendente': return 'estado-projeto-pendente';
+        case 'concluido': return 'estado-projeto-concluido';
+        case 'cancelado': return 'estado-projeto-cancelado';
+        default: return 'estado-projeto-ativo';
+      }
+    }
+    
+    switch (estado) {
+      case 'ativo': return 'estado-projeto-ativo';
+      case 'pausado': return 'estado-projeto-pausado';
+      case 'concluido': return 'estado-projeto-concluido';
+      case 'cancelado': return 'estado-projeto-cancelado';
+      case 'pendente': return 'estado-projeto-pendente';
+      default: return 'estado-projeto-ativo';
+    }
+  }
+
+  /**
+   * Navegar para a página de detalhes do projeto
+   */
+  openProject(projectId: number): void {
+    this.router.navigate(['/user/projeto', projectId]);
   }
 }

@@ -15,8 +15,9 @@ import { MessageService } from 'primeng/api';
 import { ProjectoService } from '../../../../Servicos/projecto.service';
 import { TarefaService } from '../../../../Servicos/tarefa.service';
 import { UsuarioService } from '../../../../Servicos/usuario.service';
+import { EquipeService } from '../../../../Servicos/equipe.service';
 import { AuthService } from '../../../../Servicos/auth.service';
-import { Projecto } from '../../../../Modelos/Projecto';
+import { Projecto, EstadoProjecto } from '../../../../Modelos/Projecto';
 import { Tarefa, CriarTarefa, EstadoTarefa, RelevanciaTarefa } from '../../../../Modelos/Tarefa';
 import { Usuario } from '../../../../Modelos/Usuario';
 
@@ -45,6 +46,8 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
   projeto: Projecto | null = null;
   tarefas: Tarefa[] = [];
   usuarios: Usuario[] = [];
+  usuariosEquipe: Usuario[] = [];
+  equipes: any[] = [];
   
   // Estados
   loading = false;
@@ -57,6 +60,11 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
   showCreateTaskDialog = false;
   createTaskForm: FormGroup;
   isCreatingTask = false;
+  
+  // Dialog de editar projeto
+  showEditProjectDialog = false;
+  editProjectForm: FormGroup;
+  isEditingProject = false;
   
   // Subscriptions
   private subscriptions: Subscription = new Subscription();
@@ -75,6 +83,12 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
     { label: 'Alto', value: RelevanciaTarefa.ALTO }
   ];
 
+  estadoProjectoOptions = [
+    { label: 'Ativo', value: EstadoProjecto.EM_ANDAMENTO },
+    { label: 'Concluído', value: EstadoProjecto.CONCLUIDO },
+    { label: 'Cancelado', value: EstadoProjecto.CANCELADO }
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private routerService: Router,
@@ -82,6 +96,7 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
     private projectoService: ProjectoService,
     private tarefaService: TarefaService,
     private usuarioService: UsuarioService,
+    private equipeService: EquipeService,
     private authService: AuthService,
     private messageService: MessageService
   ) {
@@ -92,6 +107,15 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
       relevancia: [RelevanciaTarefa.MEDIO, Validators.required],
       dataLimite: ['', Validators.required],
       responsavelId: ['']
+    });
+    
+    this.editProjectForm = this.fb.group({
+      nome: ['', [Validators.required, Validators.minLength(3)]],
+      descricao: ['', [Validators.required, Validators.minLength(10)]],
+      dataInicio: ['', Validators.required],
+      dataFim: ['', Validators.required],
+      estado: ['ativo', Validators.required],
+      equipeId: ['', Validators.required]
     });
   }
 
@@ -115,8 +139,15 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
     // Carregar dados do projeto
     const projectSub = this.projectoService.getProjectoById(projectId).subscribe({
       next: (response: any) => {
+        console.log('Projeto carregado:', response);
         this.projeto = response.data;
-        this.loadProjectTasks(projectId);
+        
+        // Extrair tarefas diretamente do projeto
+        this.tarefas = response.data?.tarefas || [];
+        console.log('Tarefas do projeto:', this.tarefas);
+        
+        // Carregar usuários da equipe
+        this.loadUsuarios();
       },
       error: (error) => {
         console.error('Erro ao carregar projeto:', error);
@@ -134,60 +165,38 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
     this.subscriptions.add(projectSub);
   }
 
-  loadProjectTasks(projectId: number) {
-    // Por enquanto, usar dados mock até ter endpoint específico para tarefas do projeto
-    // TODO: Implementar endpoint /projetos/{id}/tarefas no backend
-    const mockTasks: Tarefa[] = [
-      {
-        id: 1,
-        titulo: 'Implementar autenticação',
-        descricao: 'Desenvolver sistema de login e registro de usuários',
-        estado: EstadoTarefa.EM_ANDAMENTO,
-        relevancia: RelevanciaTarefa.ALTO,
-        dataLimite: new Date('2025-01-15'),
-        responsavelId: 1,
-        projectoId: projectId,
-        responsavel: {
-          id: 1,
-          nome: 'João Silva',
-          email: 'joao@exemplo.com',
-          telefone: '',
-          cargoId: 1,
-          nivelHierarquico: 'senior' as any,
-          estado: 'ativo' as any,
-          role: 'user' as any
-        }
-      },
-      {
-        id: 2,
-        titulo: 'Criar interface de dashboard',
-        descricao: 'Desenvolver dashboard principal com estatísticas',
-        estado: EstadoTarefa.PENDENTE,
-        relevancia: RelevanciaTarefa.MEDIO,
-        dataLimite: new Date('2025-01-20'),
-        responsavelId: 2,
-        projectoId: projectId,
-        responsavel: {
-          id: 2,
-          nome: 'Maria Santos',
-          email: 'maria@exemplo.com',
-          telefone: '',
-          cargoId: 1,
-          nivelHierarquico: 'pleno' as any,
-          estado: 'ativo' as any,
-          role: 'user' as any
-        }
-      }
-    ];
 
-    this.tarefas = mockTasks;
-    this.loadUsuarios();
-  }
 
   loadUsuarios() {
+    if (!this.projeto?.equipe?.id) {
+      console.log('Projeto ou equipe não encontrados');
+      this.loading = false;
+      return;
+    }
+
+    // Carregar membros da equipe do projeto
+    const equipeSub = this.equipeService.getEquipeById(this.projeto.equipe.id).subscribe({
+      next: (response: any) => {
+        console.log('Equipe carregada:', response);
+        const equipe = response.data;
+        this.usuariosEquipe = equipe?.membros || [];
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar membros da equipe:', error);
+        // Fallback: carregar todos os usuários se não conseguir carregar a equipe
+        this.loadAllUsuarios();
+      }
+    });
+
+    this.subscriptions.add(equipeSub);
+  }
+
+  private loadAllUsuarios() {
     const usersSub = this.usuarioService.getUsuarios().subscribe({
       next: (response: any) => {
         this.usuarios = response.data || [];
+        this.usuariosEquipe = this.usuarios; // Usar todos os usuários como fallback
         this.loading = false;
       },
       error: (error) => {
@@ -209,6 +218,49 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
   closeCreateTaskDialog() {
     this.showCreateTaskDialog = false;
     this.createTaskForm.reset();
+  }
+
+  openEditProjectDialog() {
+    if (!this.projeto) return;
+    
+    // Carregar equipes para o dropdown
+    this.loadEquipes();
+    
+    // Preencher formulário com dados atuais do projeto
+    this.editProjectForm.patchValue({
+      nome: this.projeto.nome,
+      descricao: this.projeto.descricao,
+      dataInicio: this.formatDateForInput(this.projeto.dataInicio),
+      dataFim: this.formatDateForInput(this.projeto.dataFim),
+      estado: this.projeto.estado || 'ativo',
+      equipeId: this.projeto.equipe?.id || this.projeto.equipeId
+    });
+    
+    this.showEditProjectDialog = true;
+  }
+
+  closeEditProjectDialog() {
+    this.showEditProjectDialog = false;
+    this.editProjectForm.reset();
+  }
+
+  private formatDateForInput(date: Date | string | null | undefined): string {
+    if (!date) return '';
+    const dateObj = new Date(date);
+    return dateObj.toISOString().split('T')[0];
+  }
+
+  loadEquipes() {
+    const equipesSub = this.equipeService.getEquipes().subscribe({
+      next: (response: any) => {
+        this.equipes = response.data || [];
+      },
+      error: (error) => {
+        console.error('Erro ao carregar equipes:', error);
+      }
+    });
+
+    this.subscriptions.add(equipesSub);
   }
 
   createTask() {
@@ -239,7 +291,8 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
         });
         
         this.closeCreateTaskDialog();
-        this.loadProjectTasks(this.projeto!.id);
+        // Recarregar dados do projeto para obter tarefas atualizadas
+        this.loadProjectData(this.projeto!.id);
       },
       error: (error) => {
         console.error('Erro ao criar tarefa:', error);
@@ -258,20 +311,71 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
     this.subscriptions.add(createSub);
   }
 
-  private markFormGroupTouched() {
-    Object.keys(this.createTaskForm.controls).forEach(key => {
-      const control = this.createTaskForm.get(key);
+  editProject() {
+    if (this.editProjectForm.invalid || !this.projeto) {
+      this.markFormGroupTouched(this.editProjectForm);
+      return;
+    }
+
+    this.isEditingProject = true;
+    const formData = this.editProjectForm.value;
+    
+    const projectUpdate = {
+      nome: formData.nome,
+      descricao: formData.descricao,
+      dataInicio: formData.dataInicio,
+      dataFim: formData.dataFim,
+      estado: formData.estado,
+      equipeId: formData.equipeId
+    };
+
+    const updateSub = this.projectoService.atualizarProjecto(this.projeto.id, projectUpdate).subscribe({
+      next: (response: any) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Projeto atualizado com sucesso!',
+          life: 5000
+        });
+        
+        this.closeEditProjectDialog();
+        // Recarregar dados do projeto
+        this.loadProjectData(this.projeto!.id);
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar projeto:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Falha ao atualizar projeto. Tente novamente.',
+          life: 5000
+        });
+      },
+      complete: () => {
+        this.isEditingProject = false;
+      }
+    });
+
+    this.subscriptions.add(updateSub);
+  }
+
+  private markFormGroupTouched(form?: FormGroup) {
+    const targetForm = form || this.createTaskForm;
+    Object.keys(targetForm.controls).forEach(key => {
+      const control = targetForm.get(key);
       control?.markAsTouched();
     });
   }
 
-  hasFieldError(fieldName: string): boolean {
-    const field = this.createTaskForm.get(fieldName);
+  hasFieldError(fieldName: string, form?: FormGroup): boolean {
+    const targetForm = form || this.createTaskForm;
+    const field = targetForm.get(fieldName);
     return !!(field?.invalid && field?.touched);
   }
 
-  getFieldError(fieldName: string): string {
-    const field = this.createTaskForm.get(fieldName);
+  getFieldError(fieldName: string, form?: FormGroup): string {
+    const targetForm = form || this.createTaskForm;
+    const field = targetForm.get(fieldName);
     if (field?.invalid && field?.touched) {
       if (field.errors?.['required']) {
         return 'Campo obrigatório';
@@ -284,9 +388,10 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
     return '';
   }
 
-  getFieldClasses(fieldName: string): string {
-    const field = this.createTaskForm.get(fieldName);
-    if (this.hasFieldError(fieldName)) {
+  getFieldClasses(fieldName: string, form?: FormGroup): string {
+    const targetForm = form || this.createTaskForm;
+    const field = targetForm.get(fieldName);
+    if (this.hasFieldError(fieldName, form)) {
       return 'border-red-500';
     }
     if (field?.valid && field?.touched) {
@@ -295,40 +400,56 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
     return 'border-gray-300';
   }
 
-  getEstadoClass(estado: EstadoTarefa): string {
-    switch (estado) {
-      case EstadoTarefa.PENDENTE: return 'status-pendente';
-      case EstadoTarefa.EM_ANDAMENTO: return 'status-andamento';
-      case EstadoTarefa.CONCLUIDA: return 'status-concluida';
-      case EstadoTarefa.CANCELADA: return 'status-cancelada';
+  getEstadoClass(estado: string): string {
+    const estadoLower = estado?.toLowerCase();
+    switch (estadoLower) {
+      case 'pendente': return 'status-pendente';
+      case 'emandamento': 
+      case 'em_andamento':
+      case 'em andamento': return 'status-andamento';
+      case 'concluida':
+      case 'concluído':
+      case 'concluída': return 'status-concluida';
+      case 'cancelada':
+      case 'cancelado': return 'status-cancelada';
       default: return 'status-pendente';
     }
   }
 
-  getEstadoLabel(estado: EstadoTarefa): string {
-    switch (estado) {
-      case EstadoTarefa.PENDENTE: return 'Pendente';
-      case EstadoTarefa.EM_ANDAMENTO: return 'Em Andamento';
-      case EstadoTarefa.CONCLUIDA: return 'Concluída';
-      case EstadoTarefa.CANCELADA: return 'Cancelada';
+  getEstadoLabel(estado: string): string {
+    const estadoLower = estado?.toLowerCase();
+    switch (estadoLower) {
+      case 'pendente': return 'Pendente';
+      case 'emandamento':
+      case 'em_andamento':
+      case 'em andamento': return 'Em Andamento';
+      case 'concluida':
+      case 'concluído':
+      case 'concluída': return 'Concluída';
+      case 'cancelada':
+      case 'cancelado': return 'Cancelada';
       default: return 'Pendente';
     }
   }
 
-  getRelevanciaClass(relevancia: RelevanciaTarefa): string {
-    switch (relevancia) {
-      case RelevanciaTarefa.BAIXO: return 'relevancia-baixa';
-      case RelevanciaTarefa.MEDIO: return 'relevancia-media';
-      case RelevanciaTarefa.ALTO: return 'relevancia-alta';
+  getRelevanciaClass(relevancia: string): string {
+    const relevanciaLower = relevancia?.toLowerCase();
+    switch (relevanciaLower) {
+      case 'baixo': return 'relevancia-baixa';
+      case 'medio':
+      case 'médio': return 'relevancia-media';
+      case 'alto': return 'relevancia-alta';
       default: return 'relevancia-media';
     }
   }
 
-  getRelevanciaLabel(relevancia: RelevanciaTarefa): string {
-    switch (relevancia) {
-      case RelevanciaTarefa.BAIXO: return 'Baixo';
-      case RelevanciaTarefa.MEDIO: return 'Médio';
-      case RelevanciaTarefa.ALTO: return 'Alto';
+  getRelevanciaLabel(relevancia: string): string {
+    const relevanciaLower = relevancia?.toLowerCase();
+    switch (relevanciaLower) {
+      case 'baixo': return 'Baixo';
+      case 'medio':
+      case 'médio': return 'Médio';
+      case 'alto': return 'Alto';
       default: return 'Médio';
     }
   }
@@ -342,5 +463,49 @@ export class UserDentroDoProjecto implements OnInit, OnDestroy {
     const deadline = new Date(dataLimite);
     const diffTime = deadline.getTime() - today.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  getEstadoProjectoLabel(estado: EstadoProjecto | string): string {
+    if (typeof estado === 'string') {
+      switch (estado.toLowerCase()) {
+        case 'ativo': return 'Ativo';
+        case 'pausado': return 'Pausado';
+        case 'concluido': return 'Concluído';
+        case 'cancelado': return 'Cancelado';
+        case 'pendente': return 'Pendente';
+        default: return 'Ativo';
+      }
+    }
+    
+    switch (estado) {
+      case 'ativo': return 'Ativo';
+      case 'pausado': return 'Pausado';
+      case 'concluido': return 'Concluído';
+      case 'cancelado': return 'Cancelado';
+      case 'pendente': return 'Pendente';
+      default: return 'Ativo';
+    }
+  }
+
+  getEstadoProjectoClass(estado: EstadoProjecto | string): string {
+    if (typeof estado === 'string') {
+      switch (estado.toLowerCase()) {
+        case 'ativo': return 'estado-projeto-ativo';
+        case 'pausado': return 'estado-projeto-pausado';
+        case 'concluido': return 'estado-projeto-concluido';
+        case 'cancelado': return 'estado-projeto-cancelado';
+        case 'pendente': return 'estado-projeto-pendente';
+        default: return 'estado-projeto-ativo';
+      }
+    }
+    
+    switch (estado) {
+      case 'ativo': return 'estado-projeto-ativo';
+      case 'pausado': return 'estado-projeto-pausado';
+      case 'concluido': return 'estado-projeto-concluido';
+      case 'cancelado': return 'estado-projeto-cancelado';
+      case 'pendente': return 'estado-projeto-pendente';
+      default: return 'estado-projeto-ativo';
+    }
   }
 }

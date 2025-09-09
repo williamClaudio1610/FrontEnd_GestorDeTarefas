@@ -5,6 +5,7 @@ import { UserListaProjectosComponent } from './Componentes/User/user-lista-proje
 import { UserListaTarefasComponent } from './Componentes/User/user-lista-tarefas/user-lista-tarefas';
 import { UserDashboardComponent } from './Componentes/User/user-dashboard/user-dashboard';
 import { UserEquipesComponent } from './Componentes/User/user-equipes/user-equipes';
+import { UserDentroDoProjecto } from './Componentes/User/user-dentro-do-projecto/user-dentro-do-projecto';
 import { Login } from './Componentes/login/login';
 import { AuthGuard } from '../Servicos/auth.guard';
 
@@ -46,6 +47,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: UserDashboardComponent },
       { path: 'projectos', component: UserListaProjectosComponent },
+      { path: 'projeto/:id', component: UserDentroDoProjecto },
       { path: 'tarefas', component: UserListaTarefasComponent },
       { path: 'equipes', component: UserEquipesComponent },
       { path: 'perfil', component: UserListaTarefasComponent }, // Placeholder
