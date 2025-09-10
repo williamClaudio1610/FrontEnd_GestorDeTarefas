@@ -23,7 +23,7 @@ export interface Equipe {
 export interface CriarEquipe {
   nome: string;
   descricao: string;
-  liderId?: number;
+  liderId: number;
   membrosIds?: number[];
   emailsConvite?: string[];
 }

@@ -8,7 +8,7 @@ import { EquipeService } from '../../../../../Servicos/equipe.service';
 import { UsuarioService } from '../../../../../Servicos/usuario.service';
 import { NotificacaoService } from '../../../../../Servicos/notificacao.service';
 import { Equipe, CriarEquipe } from '../../../../../Modelos/Equipe';
-import { Usuario } from '../../../../../Modelos/Usuario';
+import { Usuario, NivelHierarquico } from '../../../../../Modelos/Usuario';
 
 @Component({
   selector: 'app-equipes',
@@ -25,6 +25,7 @@ export class EquipesComponent implements OnInit {
   
   // Lista de usuários para seleção
   usuarios: Usuario[] = [];
+  lideres: Usuario[] = [];
   
   // Paginação
   currentPage = 1;
@@ -41,6 +42,7 @@ export class EquipesComponent implements OnInit {
   newEquipe: CriarEquipe = {
     nome: '',
     descricao: '',
+    liderId: 0,
     membrosIds: [],
     emailsConvite: []
   };
@@ -121,10 +123,15 @@ export class EquipesComponent implements OnInit {
         const usuarios = response.data;
         this.usuarios = usuarios as Usuario[];
         
+        // Filtrar apenas líderes para seleção de líder da equipe
+        this.lideres = this.usuarios.filter(usuario => 
+          usuario.nivelHierarquico === NivelHierarquico.LIDER
+        );
+        
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: `${this.usuarios.length} usuários carregados para seleção`,
+          detail: `${this.usuarios.length} usuários carregados (${this.lideres.length} líderes disponíveis)`,
           life: 2000
         });
       },
@@ -157,7 +164,7 @@ export class EquipesComponent implements OnInit {
     this.newEquipe = {
       nome: '',
       descricao: '',
-      liderId: 0,
+      liderId: this.lideres.length > 0 ? this.lideres[0].id : 0,
       membrosIds: [],
       emailsConvite: []
     };
@@ -208,6 +215,16 @@ export class EquipesComponent implements OnInit {
         severity: 'warn',
         summary: 'Validação',
         detail: 'Nome da equipe é obrigatório',
+        life: 4000
+      });
+      return;
+    }
+
+    if (!this.newEquipe.liderId || this.newEquipe.liderId === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Validação',
+        detail: 'Seleção de líder é obrigatória',
         life: 4000
       });
       return;
@@ -344,5 +361,12 @@ export class EquipesComponent implements OnInit {
   getUserEmail(userId: number): string {
     const usuario = this.usuarios.find(u => u.id === userId);
     return usuario ? usuario.email : 'Email não encontrado';
+  }
+
+  // Obter nome do líder selecionado
+  getLiderSelecionadoNome(): string {
+    if (!this.newEquipe.liderId) return 'Nenhum líder selecionado';
+    const lider = this.lideres.find(l => l.id === this.newEquipe.liderId);
+    return lider ? lider.nome : 'Líder não encontrado';
   }
 }

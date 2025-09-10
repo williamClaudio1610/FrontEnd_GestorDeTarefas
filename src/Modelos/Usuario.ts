@@ -9,10 +9,7 @@ export enum Role {
 }
 
 export enum NivelHierarquico {
-  ESTAGIARIO = 'estagiario',
-  JUNIOR = 'junior',
-  PLENO = 'pleno',
-  SENIOR = 'senior',
+  MEMBRO = 'membro',
   LIDER = 'lider',
   GERENTE = 'gerente',
   DIRETOR = 'diretor'

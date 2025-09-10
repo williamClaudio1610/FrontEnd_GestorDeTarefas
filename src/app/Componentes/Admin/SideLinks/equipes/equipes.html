@@ -219,6 +219,24 @@
             placeholder="Descreva a função desta equipe"></textarea>
         </div>
 
+        <!-- Seleção de Líder -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Líder da Equipe *</label>
+          <select 
+            [(ngModel)]="newEquipe.liderId"
+            name="liderId"
+            required
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option value="0" disabled>Selecione um líder</option>
+            <option *ngFor="let lider of lideres" [value]="lider.id">
+              {{ lider.nome }} ({{ lider.email }})
+            </option>
+          </select>
+          <p class="text-xs text-gray-500 mt-1">
+            Líder selecionado: {{ getLiderSelecionadoNome() }}
+          </p>
+        </div>
+
         <!-- Seleção de Usuários Existentes -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Selecionar Usuários Existentes</label>

@@ -55,17 +55,14 @@ export class UsuariosComponent implements OnInit {
     telefone: '',
     senha: '',
     cargoId: 0,
-    nivelHierarquico: NivelHierarquico.JUNIOR,
+    nivelHierarquico: NivelHierarquico.MEMBRO,
     estado: EstadoUsuario.ATIVO,
     role: Role.USER
   };
 
   // Opções para selects
   nivelOptions = [
-    { value: NivelHierarquico.ESTAGIARIO, label: 'Estagiário' },
-    { value: NivelHierarquico.JUNIOR, label: 'Júnior' },
-    { value: NivelHierarquico.PLENO, label: 'Pleno' },
-    { value: NivelHierarquico.SENIOR, label: 'Sênior' },
+    { value: NivelHierarquico.MEMBRO, label: 'Membro' },
     { value: NivelHierarquico.LIDER, label: 'Líder' },
     { value: NivelHierarquico.GERENTE, label: 'Gerente' },
     { value: NivelHierarquico.DIRETOR, label: 'Diretor' }
@@ -260,7 +257,7 @@ export class UsuariosComponent implements OnInit {
       telefone: '',
       senha: '',
       cargoId: this.cargos[0]?.id || 0,
-      nivelHierarquico: NivelHierarquico.JUNIOR,
+      nivelHierarquico: NivelHierarquico.MEMBRO,
       estado: EstadoUsuario.ATIVO,
       role: Role.USER
     };
@@ -293,7 +290,21 @@ export class UsuariosComponent implements OnInit {
       life: 2000
     });
 
-    this.usuarioService.createUsuario(this.newUser as unknown as Usuario).subscribe({
+    // Preparar dados no formato esperado pelo backend
+    const userData = {
+      nome: this.newUser.nome,
+      email: this.newUser.email,
+      telefone: this.newUser.telefone,
+      senha: this.newUser.senha,
+      cargoId: this.newUser.cargoId,
+      nivelHierarquico: this.newUser.nivelHierarquico,
+      estado: this.newUser.estado,
+      role: this.newUser.role
+    };
+
+    console.log('Dados sendo enviados:', JSON.stringify(userData, null, 2));
+
+    this.usuarioService.createUsuario(userData as unknown as Usuario).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -304,15 +315,39 @@ export class UsuariosComponent implements OnInit {
         this.closeAddUserModal();
         this.loadUsers();
       },
-      error: () => {
+      error: (error) => {
+        console.log('Erro ao criar usuário:', error);
+        console.log('Status:', error.status);
+        console.log('Mensagem:', error.message);
+        console.log('Response:', error.error);
+        
+        this.isSavingUser = false;
+        
+        let errorMessage = 'Falha ao criar usuário';
+        let errorDetail = 'Não foi possível criar o usuário.';
+        
+        if (error.status === 409) {
+          errorMessage = 'Conflito';
+          errorDetail = 'Já existe um usuário com este email. Por favor, use um email diferente.';
+        } else if (error.status === 400) {
+          errorMessage = 'Dados inválidos';
+          errorDetail = 'Verifique se todos os campos obrigatórios foram preenchidos corretamente.';
+        } else if (error.status === 422) {
+          errorMessage = 'Validação';
+          errorDetail = 'Os dados fornecidos não atendem aos critérios de validação.';
+        } else if (error.status === 500) {
+          errorMessage = 'Erro interno';
+          errorDetail = 'Ocorreu um erro interno no servidor. Tente novamente mais tarde.';
+        }
+        
         this.messageService.add({
           severity: 'error',
-          summary: 'Erro',
-          detail: 'Falha ao criar usuário',
+          summary: errorMessage,
+          detail: errorDetail,
           life: 5000
         });
-        this.notificacao.erroGenerico('Não foi possível criar o usuário.');
-        this.isSavingUser = false;
+        
+        this.notificacao.erroGenerico(errorDetail);
       }
     });
   }
@@ -462,14 +497,8 @@ export class UsuariosComponent implements OnInit {
   // Obter nível hierárquico formatado
   getNivelHierarquicoText(nivel: NivelHierarquico): string {
     switch (nivel) {
-      case NivelHierarquico.ESTAGIARIO:
-        return 'Estagiário';
-      case NivelHierarquico.JUNIOR:
-        return 'Júnior';
-      case NivelHierarquico.PLENO:
-        return 'Pleno';
-      case NivelHierarquico.SENIOR:
-        return 'Sênior';
+      case NivelHierarquico.MEMBRO:
+        return 'Membro';
       case NivelHierarquico.LIDER:
         return 'Líder';
       case NivelHierarquico.GERENTE:

@@ -14,8 +14,11 @@
       </div>
       <div class="stat-content">
         <h3 class="stat-title">Total de Usuários</h3>
-        <p class="stat-value">0</p>
-        <p class="stat-change text-green-600">+0% este mês</p>
+        <div *ngIf="isLoadingUsuarios" class="animate-pulse">
+          <div class="h-8 w-16 bg-gray-200 rounded"></div>
+        </div>
+        <p *ngIf="!isLoadingUsuarios" class="stat-value">{{ totalUsuarios }}</p>
+        <p class="stat-change text-green-600">Dados em tempo real</p>
       </div>
     </div>
 
@@ -28,8 +31,11 @@
       </div>
       <div class="stat-content">
         <h3 class="stat-title">Total de Equipes</h3>
-        <p class="stat-value">0</p>
-        <p class="stat-change text-green-600">+0% este mês</p>
+        <div *ngIf="isLoadingEquipes" class="animate-pulse">
+          <div class="h-8 w-16 bg-gray-200 rounded"></div>
+        </div>
+        <p *ngIf="!isLoadingEquipes" class="stat-value">{{ totalEquipes }}</p>
+        <p class="stat-change text-green-600">Dados em tempo real</p>
       </div>
     </div>
 
@@ -42,8 +48,11 @@
       </div>
       <div class="stat-content">
         <h3 class="stat-title">Projetos Ativos</h3>
-        <p class="stat-value">0</p>
-        <p class="stat-change text-green-600">+0% este mês</p>
+        <div *ngIf="isLoadingProjetos" class="animate-pulse">
+          <div class="h-8 w-16 bg-gray-200 rounded"></div>
+        </div>
+        <p *ngIf="!isLoadingProjetos" class="stat-value">{{ totalProjetos }}</p>
+        <p class="stat-change text-green-600">Dados em tempo real</p>
       </div>
     </div>
 
@@ -56,8 +65,11 @@
       </div>
       <div class="stat-content">
         <h3 class="stat-title">Tarefas Pendentes</h3>
-        <p class="stat-value">0</p>
-        <p class="stat-change text-red-600">+0% este mês</p>
+        <div *ngIf="isLoadingTarefas" class="animate-pulse">
+          <div class="h-8 w-16 bg-gray-200 rounded"></div>
+        </div>
+        <p *ngIf="!isLoadingTarefas" class="stat-value">{{ totalTarefasPendentes }}</p>
+        <p class="stat-change text-red-600">Dados em tempo real</p>
       </div>
     </div>
   </div>
