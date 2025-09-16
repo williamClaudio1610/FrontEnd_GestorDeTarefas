@@ -70,12 +70,9 @@ This project was developed for academic/professional purposes.
 
 ---
 
-📚 Additional Resources
+## 📚 Additional Resources
 
-Angular CLI Documentation
+* [Angular CLI Documentation](https://angular.dev/tools/cli)
+* [PrimeNG Components](https://primeng.org/)
+* [Bootstrap](https://getbootstrap.com/)
 
-PrimeNG Components
-
-Bootstrap
-
-NestJS Documentation
