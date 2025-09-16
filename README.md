@@ -12,7 +12,7 @@ The application is designed to simplify the management of projects, tasks, and t
 - View assigned tasks, teams, and projects
 - If designated as a Project Leader, manage their own project
 
-###👨‍💼 Administrators
+### 👨‍💼 Administrators
 - Full access to the platform
 - Create and manage users, teams, and projects
 - Grant access to members of the institution
