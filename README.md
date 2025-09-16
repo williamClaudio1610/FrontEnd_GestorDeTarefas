@@ -1,59 +1,65 @@
-# FrontendGestorEscolar
+Project Management System – Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.3.
+This project was generated using Angular CLI
+ version 20.0.3 and integrates with a backend developed in NestJS
+.
+It is designed as a Project Management System for institutions, allowing different roles and permissions across the platform.
 
-## Development server
+📌 Features
+👤 Users
+
+Login with institutional credentials (access provided by the administrator).
+
+View assigned tasks, teams, and projects.
+
+Manage projects if designated as a Project Leader.
+
+👨‍💼 Administrator
+
+Full control of the platform.
+
+Create and manage teams, users, and projects.
+
+Grant login access to institution members.
+
+View and oversee all activities in the system.
+
+⚙️ Development server
 
 To start a local development server, run:
 
-```bash
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+Then open your browser at:
+👉 http://localhost:4200/
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+The application will automatically reload when source files are modified.
 
-```bash
-ng generate component component-name
-```
+🛠️ Building
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Run:
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
 ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
+The build artifacts will be stored in the dist/ directory.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+🧪 Running unit tests
 
-```bash
+Run tests with Karma
+:
+
 ng test
-```
 
-## Running end-to-end tests
+🌐 Backend Repository
 
-For end-to-end (e2e) testing, run:
+The backend of this system is developed in NestJS and is hosted in a separate repository.
+For access, please contact me via email: claudiosva1@gmail.com
+.
 
-```bash
-ng e2e
-```
+📚 Additional Resources
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+For more about Angular CLI: Angular CLI Reference
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+For more about NestJS: NestJS Documentation
