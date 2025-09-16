@@ -1,55 +1,82 @@
-📌 Project Management System – Frontend
+📊 FrontendGestorTarefas - Project Management System
 
-This project was developed using Angular and integrates with a NestJS backend (hosted in a separate repository).
-It is designed as an institutional project management system, providing different user roles with specific permissions.
+This is the frontend of the institutional project management system, built with Angular 20, Bootstrap, and PrimeNG to provide a modern, responsive, and user-friendly interface.
 
-🚀 Features
+The application is designed to simplify the management of projects, tasks, and teams within an organization, with different user roles and permissions.
+
+✨ Main Features
 👤 Users
 
-Login (access granted by the administrator).
+Login (access granted by the administrator)
 
-View assigned tasks, teams, and projects.
+View assigned tasks, teams, and projects
 
-If assigned as a Project Leader, manage the respective project.
+If designated as a Project Leader, manage their own project
 
-👨‍💼 Administrator
+👨‍💼 Administrators
 
-Full control of the platform.
+Full access to the platform
 
-Creates and manages teams, users, and projects.
+Create and manage users, teams, and projects
 
-Grants access to institution members.
+Grant access to members of the institution
 
-Has visibility over all system activities.
+View all activities and system operations
 
-🛠️ Technologies
+🚀 Technologies
 
-Frontend: Angular
+Angular 20
+ – Frontend framework
 
-Styling: Bootstrap + PrimeNG
+TypeScript
+ – Programming language
 
-Backend: NestJS (separate repository, access available upon request via email)
+Bootstrap
+ – Responsive layout
 
-⚡ How to Run
-Development server
+PrimeNG
+ – Advanced UI components
+
+NestJS
+ – Backend framework (separate repository)
+
+📦 Installation
+
+Clone the repository and install dependencies:
+
+git clone https://github.com/williamClaudio1610/FrontendGestorEscolar.git
+cd FrontendGestorEscolar
+npm install
+
+▶️ Run in Development Mode
 ng serve
 
 
 Then open: http://localhost:4200/
 
-Build the project
-ng build
+The application will auto-reload whenever you save changes.
 
+🔗 Backend
 
-Artifacts will be generated in the dist/ folder.
+The backend of this system is located in a separate private repository.
+📩 To request access, please contact via email: claudiosva1@gmail.com
 
-🌐 Backend
+📂 Project Structure
 
-The backend is located in a separate repository.
-📩 For access, please contact me via email: claudiosva1@gmail.com
+/src/app → main components, services, and modules
+
+/assets → static files (images, icons, styles)
+
+📄 License
+
+This project was developed for academic/professional purposes. License to be defined.
 
 📚 Additional Resources
 
 Angular CLI Documentation
+
+PrimeNG Components
+
+Bootstrap
 
 NestJS Documentation
