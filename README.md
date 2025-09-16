@@ -1,65 +1,55 @@
-Project Management System – Frontend
+📌 Project Management System – Frontend
 
-This project was generated using Angular CLI
- version 20.0.3 and integrates with a backend developed in NestJS
-.
-It is designed as a Project Management System for institutions, allowing different roles and permissions across the platform.
+This project was developed using Angular and integrates with a NestJS backend (hosted in a separate repository).
+It is designed as an institutional project management system, providing different user roles with specific permissions.
 
-📌 Features
+🚀 Features
 👤 Users
 
-Login with institutional credentials (access provided by the administrator).
+Login (access granted by the administrator).
 
 View assigned tasks, teams, and projects.
 
-Manage projects if designated as a Project Leader.
+If assigned as a Project Leader, manage the respective project.
 
 👨‍💼 Administrator
 
 Full control of the platform.
 
-Create and manage teams, users, and projects.
+Creates and manages teams, users, and projects.
 
-Grant login access to institution members.
+Grants access to institution members.
 
-View and oversee all activities in the system.
+Has visibility over all system activities.
 
-⚙️ Development server
+🛠️ Technologies
 
-To start a local development server, run:
+Frontend: Angular
 
+Styling: Bootstrap + PrimeNG
+
+Backend: NestJS (separate repository, access available upon request via email)
+
+⚡ How to Run
+Development server
 ng serve
 
 
-Then open your browser at:
-👉 http://localhost:4200/
+Then open: http://localhost:4200/
 
-The application will automatically reload when source files are modified.
-
-🛠️ Building
-
-Run:
-
+Build the project
 ng build
 
 
-The build artifacts will be stored in the dist/ directory.
+Artifacts will be generated in the dist/ folder.
 
-🧪 Running unit tests
+🌐 Backend
 
-Run tests with Karma
-:
-
-ng test
-
-🌐 Backend Repository
-
-The backend of this system is developed in NestJS and is hosted in a separate repository.
-For access, please contact me via email: claudiosva1@gmail.com
-.
+The backend is located in a separate repository.
+📩 For access, please contact me via email: claudiosva1@gmail.com
 
 📚 Additional Resources
 
-For more about Angular CLI: Angular CLI Reference
+Angular CLI Documentation
 
-For more about NestJS: NestJS Documentation
+NestJS Documentation
